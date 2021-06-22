@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_unterhaltungs_app/Kalender/CalenderView.dart';
+import 'package:mobile_unterhaltungs_app/Produktinformationen/ProductList.dart';
+import 'package:flutter/cupertino.dart';
 
 void main() {
   runApp(MyApp());
@@ -55,14 +57,14 @@ class _MainMenuState extends State<MainMenu> {
               ),
             ),
             const SizedBox(height: 12.0),
-            /*ElevatedButton(
-              child: Text('Chat'),
+            ElevatedButton(
+              child: Text('ProductList'),
               onPressed: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => ),//Hier kommt der Aufruf der Seite
+                MaterialPageRoute(builder: (_) => ProductList() ),//Hier kommt der Aufruf der Seite
               ),
             ),
-            const SizedBox(height: 12.0),*/
+            const SizedBox(height: 12.0),
             /*ElevatedButton(
               child: Text('Mein Bereich'),
               onPressed: () => Navigator.push(
