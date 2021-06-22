@@ -235,9 +235,7 @@ class RegistrierenHomePageState extends State {
 
                   // Zur Anmeldung wechseln, sofern die Eingaben korrekt sind
                   if(firstNameValid && lastNameValid && passwordValid) {
-
-                    Login login = new Login(firstNameController.text, lastNameController.text, passwordController.text);
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => login.build(context)));
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => Login(firstNameController.text, lastNameController.text, passwordController.text)));
                   }
                 },
                 child: Text(

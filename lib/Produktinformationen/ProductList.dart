@@ -31,13 +31,14 @@ class _ProductListState extends State<ProductList>{
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
             child: Row(
+
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      post["name"],
+                      post["name:"],
                       style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                     ),
                     Text(
@@ -53,7 +54,6 @@ class _ProductListState extends State<ProductList>{
                     )
                   ],
                 ),
-
               ],
             ),
           )));
@@ -63,11 +63,11 @@ class _ProductListState extends State<ProductList>{
     });
   }
 
-  /*@override
+  @override
   void initState() {
     super.initState();
     getPostsData();
-  }*/
+  }
 
 
   @override

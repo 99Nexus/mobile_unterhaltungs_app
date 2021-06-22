@@ -177,8 +177,7 @@ class LoginHomePageState extends State {
 
                   // In das Hauptmenue wechseln sofern das Passwort korrekt ist
                   if(checkPassword()) {
-                    Hauptmenue hauptmenue = new Hauptmenue();
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => hauptmenue.build(context)));
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => Hauptmenue()));
                   }
                 },
                 child: Text(

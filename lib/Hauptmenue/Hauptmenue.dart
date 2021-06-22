@@ -2,7 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_unterhaltungs_app/Kalender/CalenderView.dart';
 import 'package:mobile_unterhaltungs_app/Login%20und%20Registrieren/Login.dart';
+import 'package:mobile_unterhaltungs_app/Produktinformationen/ProductList.dart';
 
 void main() {
   runApp(Hauptmenue());
@@ -31,9 +33,24 @@ HauptmenueHomePage({Key? key, required this.title}) : super(key: key);
 
 class HauptmenueHomePageState extends State {
 
+  int _currentNavigationIndex=0;
+  _changeCurrentSide(int index){
+    setState(() {
+      _currentNavigationIndex=index;
+      switch(_currentNavigationIndex){
+        case 1:{
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => CalenderView()),//Hier kommt der Aufruf der Seite
+          );
+        }
+        break;
+      }
+    }
+    );
+  }
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Image.asset(
@@ -62,9 +79,10 @@ class HauptmenueHomePageState extends State {
                   backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 104, 18, 18)),
                   foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
                 ),
-                onPressed: () {
-                  // Navigation zum Kalender
-                },
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => CalenderView()),//Hier kommt der Aufruf der Seite
+                ),
                 child: Text(
                   'Kalender',
                   style: TextStyle(
@@ -98,6 +116,7 @@ class HauptmenueHomePageState extends State {
                   ),
                 ),
               ),
+
             ),
 
             // Mein Bereich
@@ -134,9 +153,10 @@ class HauptmenueHomePageState extends State {
                   backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 104, 18, 18)),
                   foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
                 ),
-                onPressed: () {
-                  // Navigation zu News
-                },
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => ProductList()),//Hier kommt der Aufruf der Seite
+                ),
                 child: Text(
                   'News',
                   style: TextStyle(
@@ -155,6 +175,8 @@ class HauptmenueHomePageState extends State {
         type : BottomNavigationBarType.fixed,
         showSelectedLabels: false,
         showUnselectedLabels: false,
+        currentIndex: _currentNavigationIndex,
+        onTap: _changeCurrentSide,
         selectedItemColor: Colors.white,
         backgroundColor: Color.fromARGB(255, 104, 18, 18),
         items: <BottomNavigationBarItem>[
@@ -175,7 +197,7 @@ class HauptmenueHomePageState extends State {
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.circle_notifications_sharp ),
+            icon: Icon(Icons.notification_important ),
             label: '',
           ),
         ],
