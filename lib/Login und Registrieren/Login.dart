@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_unterhaltungs_app/Login%20und%20Registrieren/Login.dart';
 import 'package:mobile_unterhaltungs_app/Hauptmenue/Hauptmenue.dart';
+import 'dart:async';
 
 void main() {
   runApp(Login('', '', ''));
@@ -51,6 +52,8 @@ class LoginHomePageState extends State {
   String firstName = '';
   String lastName = '';
   String password = '';
+  int passwordTryCounter = 2;
+  bool enablePasswordInput = true;
 
   LoginHomePageState(String firstName, String lastName, String password) {
 
@@ -131,6 +134,7 @@ class LoginHomePageState extends State {
                 Container(
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: TextField (
+                    enabled: enablePasswordInput,
                     controller: passwordController,
                     textAlign: TextAlign.center,
                     cursorColor: Color.fromARGB(255, 104, 18, 18),
@@ -214,7 +218,30 @@ class LoginHomePageState extends State {
         valid = false;
       }else if(passwordController.text.compareTo(password) != 0) {
 
-        errorTextPassword = 'Passwort stimmt nicht überein';
+        // Drei Anmeldeversuche übrig
+        if(passwordTryCounter >= 1) {
+
+          errorTextPassword = 'Passwort nicht korrekt - noch ' + passwordTryCounter.toString() + ' Versuche';
+          passwordTryCounter--;
+        }
+        // Keine Anmeldeversuche mehr übrig - Eingabe für bestimmte Zeit sperren
+        else {
+
+          errorTextPassword = 'Passworteingabe wird für 60 Sekunden gesperrt';
+          enablePasswordInput = false;
+
+
+          Timer(Duration(seconds: 60), () {
+
+            // State setzen, da die Aktionen im Timer asynchron ablaufen
+            setState(() {
+              enablePasswordInput = true;
+              passwordTryCounter = 2;
+              errorTextPassword = ' ';
+            });
+          });
+        }
+
         valid = false;
       } else {
 
