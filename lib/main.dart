@@ -3,6 +3,8 @@ import 'package:mobile_unterhaltungs_app/Kalender/CalenderView.dart';
 import 'package:mobile_unterhaltungs_app/Produktinformationen/ProductList.dart';
 import 'package:flutter/cupertino.dart';
 
+import 'Hauptmenue/Hauptmenue.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -28,61 +30,54 @@ class MainMenu extends StatefulWidget {
 }
 
 class _MainMenuState extends State<MainMenu> {
-
+  int _pageIndex=0;
+  List<Widget> pageList=<Widget>[
+    Hauptmenue(),
+    CalenderView(),
+    ProductList(),
+    Placeholder(),
+    Placeholder(),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text("Hauptmenü"),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(height: 20.0),
-            ElevatedButton(
-              child: Text('Kalender'),
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => CalenderView()),//Hier kommt der Aufruf der Seite
-              ),
-            ),
-            const SizedBox(height: 12.0),
-            ElevatedButton(
-              child: Text('ProductList'),
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => ProductList() ),//Hier kommt der Aufruf der Seite
-              ),
-            ),
-            const SizedBox(height: 12.0),
-            /*ElevatedButton(
-              child: Text('Mein Bereich'),
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => ),//Hier kommt der Aufruf der Seite
-              ),
-            ),
-            const SizedBox(height: 12.0),*/
-            /*ElevatedButton(
-              child: Text('News'),
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => ), //Hier kommt der Aufruf der Seite
-              ),
-            ),
-            const SizedBox(height: 12.0),*/
-          ],
-        ),
+      backgroundColor: Colors.white,
+      body:pageList[_pageIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        type : BottomNavigationBarType.fixed,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        currentIndex: _pageIndex,
+        onTap: (value){
+          setState(() {
+            _pageIndex=value;
+          });
+        },
+        selectedItemColor: Colors.white,
+        backgroundColor: Color.fromARGB(255, 104, 18, 18),
+        items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chat),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_box),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notification_important ),
+            label: '',
+          ),
+        ],
       ),
     );
   }

@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_unterhaltungs_app/Kalender/CalenderView.dart';
-import 'package:mobile_unterhaltungs_app/Login%20und%20Registrieren/Login.dart';
 import 'package:mobile_unterhaltungs_app/Produktinformationen/ProductList.dart';
 
 void main() {
@@ -33,22 +32,6 @@ HauptmenueHomePage({Key? key, required this.title}) : super(key: key);
 
 class HauptmenueHomePageState extends State {
 
-  int _currentNavigationIndex=0;
-  _changeCurrentSide(int index){
-    setState(() {
-      _currentNavigationIndex=index;
-      switch(_currentNavigationIndex){
-        case 1:{
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => CalenderView()),//Hier kommt der Aufruf der Seite
-          );
-        }
-        break;
-      }
-    }
-    );
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -153,7 +136,7 @@ class HauptmenueHomePageState extends State {
                   backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 104, 18, 18)),
                   foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
                 ),
-                onPressed: () => Navigator.push(
+                onPressed: () => Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (_) => ProductList()),//Hier kommt der Aufruf der Seite
                 ),
@@ -169,38 +152,6 @@ class HauptmenueHomePageState extends State {
             ),
           ],
         ),
-      ),
-
-      bottomNavigationBar: BottomNavigationBar(
-        type : BottomNavigationBarType.fixed,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        currentIndex: _currentNavigationIndex,
-        onTap: _changeCurrentSide,
-        selectedItemColor: Colors.white,
-        backgroundColor: Color.fromARGB(255, 104, 18, 18),
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_box),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notification_important ),
-            label: '',
-          ),
-        ],
       ),
     );
   }

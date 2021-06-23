@@ -2,8 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile_unterhaltungs_app/Login%20und%20Registrieren/Login.dart';
-import 'package:mobile_unterhaltungs_app/Hauptmenue/Hauptmenue.dart';
+import 'package:mobile_unterhaltungs_app/main.dart';
 import 'dart:async';
 
 void main() {
@@ -181,7 +180,7 @@ class LoginHomePageState extends State {
 
                   // In das Hauptmenue wechseln sofern das Passwort korrekt ist
                   if(checkPassword()) {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => Hauptmenue()));
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => MyApp()));
                   }
                 },
                 child: Text(

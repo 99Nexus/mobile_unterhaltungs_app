@@ -12,15 +12,15 @@ class _CalenderViewState extends State<CalenderView> {
   DateTime _focusedDay=DateTime.now();
   DateTime? _selectedDay;
 
-  /*double start=12.50;
+  double start=12.50;
   double end=15;
   GlobalKey _rowKey=GlobalKey();
-  double _height_end=0;
-  double _height_start=0;
+  double? _height_end=0;
+  double? _height_start=0;
   double _width=48;
 
   _getRowSize(){
-    RenderBox renderBox=_rowKey.currentContext.findRenderObject();
+    final RenderBox renderBox=_rowKey.currentContext!.findRenderObject() as RenderBox;
     Size size= renderBox.size;
     setState(() {
       _height_end=size.height*(end-start);
@@ -30,8 +30,8 @@ class _CalenderViewState extends State<CalenderView> {
 
   @override
   void initState() {
-    SchedulerBinding.instance.addPostFrameCallback((_) => _getRowSize());
-  }*/
+    SchedulerBinding.instance!.addPostFrameCallback((_) => _getRowSize());
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +54,7 @@ class _CalenderViewState extends State<CalenderView> {
                   Column(
                     children: [
                       Expanded(
-                          //key: _rowKey,
+                          key: _rowKey,
                           child: Text("08:00")),
                       Expanded(child: Text("09:00")),
                       Expanded(child: Text("10:00")),
@@ -68,7 +68,7 @@ class _CalenderViewState extends State<CalenderView> {
                       Expanded(child: Text("18:00")),
                     ],
                   ),
-                  /*Column(
+                  Column(
                     children: [
                       AnimatedContainer(
                         color: Colors.white,
@@ -86,7 +86,7 @@ class _CalenderViewState extends State<CalenderView> {
                         ),
                       ),
                     ],
-                  ),*/
+                  ),
                 ],
               ),
           )
