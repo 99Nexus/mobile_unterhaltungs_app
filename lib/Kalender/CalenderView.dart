@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
+import 'package:mobile_unterhaltungs_app/Data/Kalender/CalenderEntry.dart';
 import 'package:table_calendar/table_calendar.dart';
+
+import 'CalData.dart';
 
 class CalenderView extends StatefulWidget {
   @override
@@ -9,28 +11,31 @@ class CalenderView extends StatefulWidget {
 
 class _CalenderViewState extends State<CalenderView> {
   CalendarFormat _calendarFormat=CalendarFormat.month;
+  late final ValueNotifier<List<CalenderEntry>> _selectedEvents;
   DateTime _focusedDay=DateTime.now();
   DateTime? _selectedDay;
 
-  double start=12.50;
+  double start=10;
   double end=15;
-  GlobalKey _rowKey=GlobalKey();
-  double? _height_end=0;
-  double? _height_start=0;
-  double _width=48;
 
-  _getRowSize(){
-    final RenderBox renderBox=_rowKey.currentContext!.findRenderObject() as RenderBox;
-    Size size= renderBox.size;
-    setState(() {
-      _height_end=size.height*(end-start);
-      _height_start=size.height*(start-8);
-    });
+  List<CalenderEntry> _getEventsForDay(DateTime day){
+    return calenderData[day] ??[];
+  }
+
+  _onDaySelected(DateTime selectedDay, DateTime focusedDay){
+    if (!isSameDay(_selectedDay, selectedDay)) {
+      setState(() {
+        _selectedDay = selectedDay;
+        _focusedDay = focusedDay;
+      });
+      _selectedEvents.value= _getEventsForDay(selectedDay);
+    }
   }
 
   @override
   void initState() {
-    SchedulerBinding.instance!.addPostFrameCallback((_) => _getRowSize());
+    _selectedDay=_focusedDay;
+    _selectedEvents = ValueNotifier(_getEventsForDay(_selectedDay!));
   }
   @override
   Widget build(BuildContext context) {
@@ -44,52 +49,43 @@ class _CalenderViewState extends State<CalenderView> {
           firstDay: DateTime(_focusedDay.year,_focusedDay.month-3,_focusedDay.day),
           lastDay: DateTime(_focusedDay.year,_focusedDay.month+3,_focusedDay.day),
           focusedDay: _focusedDay,
+            startingDayOfWeek: StartingDayOfWeek.monday,
           calendarFormat: _calendarFormat,
+            onFormatChanged: (format){
+            setState(() {
+              _calendarFormat=format;
+            });
+            },
+            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+            onDaySelected: _onDaySelected,
           ),
           const SizedBox(height: 8.0),
           Expanded(
-              child: Row(
-
-                children: <Widget>[
-                  Column(
-                    children: [
-                      Expanded(
-                          key: _rowKey,
-                          child: Text("08:00")),
-                      Expanded(child: Text("09:00")),
-                      Expanded(child: Text("10:00")),
-                      Expanded(child: Text("11:00")),
-                      Expanded(child: Text("12:00")),
-                      Expanded(child: Text("13:00")),
-                      Expanded(child: Text("14:00")),
-                      Expanded(child: Text("15:00")),
-                      Expanded(child: Text("16:00")),
-                      Expanded(child: Text("17:00")),
-                      Expanded(child: Text("18:00")),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      AnimatedContainer(
-                        color: Colors.white,
-                        width: _width,
-                        height: _height_start,
-                        duration: Duration(milliseconds: 1300),
+            child: ValueListenableBuilder<List<CalenderEntry>>(
+              valueListenable: _selectedEvents,
+              builder: (context, value, _) {
+                return ListView.builder(
+                  itemCount: value.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: const EdgeInsets.symmetric(
+                        horizontal: 12.0,
+                        vertical: 4.0,
                       ),
-                      AnimatedContainer(
-                        width: _width,
-                        height: _height_end,
-                        duration: Duration(milliseconds: 1300),
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                      decoration: BoxDecoration(
+                        border: Border.all(),
+                        borderRadius: BorderRadius.circular(12.0),
                       ),
-                    ],
-                  ),
-                ],
-              ),
-          )
+                      child: ListTile(
+                        onTap: () => print('${value[index].owner.vorname}'),
+                        title: Text('${value[index].owner.vorname}'),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
         ]
       ),
     );
