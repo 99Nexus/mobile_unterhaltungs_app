@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "532643327238",
+    "project_id": "mobileunterhaltungsapp",
+    "storage_bucket": "mobileunterhaltungsapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:532643327238:android:b20b30f21d218dbe9b0287",
+        "android_client_info": {
+          "package_name": "com.example.mobile_unterhaltungs_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "532643327238-tnkvcrt7ghdad3j0eje2v1v0bm47qclf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-EGiUB4AtvYrwm3XmHBEHGtdl6R3jM-k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "532643327238-tnkvcrt7ghdad3j0eje2v1v0bm47qclf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

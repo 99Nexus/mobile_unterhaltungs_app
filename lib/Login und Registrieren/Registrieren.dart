@@ -3,9 +3,10 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_unterhaltungs_app/Login%20und%20Registrieren/Login.dart';
-import 'package:mobile_unterhaltungs_app/Hauptmenue/Hauptmenue.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(Registrieren());
 }
 
@@ -38,6 +39,30 @@ class RegistrierenHomePageState extends State {
   String errorTextFirstName = ' ';
   String errorTextLastName = ' ';
   String errorTextPassword = ' ';
+  bool _initialized = false;
+  bool _error = false;
+
+  // Asynchrone Funktion um FlutterFire zu initialisieren
+  void initializeFlutterFire() async {
+    try {
+      // Wait for Firebase to initialize and set `_initialized` state to true
+      await Firebase.initializeApp();
+      setState(() {
+        _initialized = true;
+      });
+    } catch(e) {
+      // Set `_error` state to true if Firebase initialization fails
+      setState(() {
+        _error = true;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    initializeFlutterFire();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
