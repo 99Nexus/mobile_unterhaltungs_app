@@ -2,12 +2,13 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:mobile_unterhaltungs_app/Login%20und%20Registrieren/Login.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(Registrieren());
+  initializeDateFormatting('de_DE').then((_) => runApp(Registrieren()));
 }
 
 class Registrieren extends StatelessWidget {

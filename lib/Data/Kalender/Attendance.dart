@@ -1,9 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:mobile_unterhaltungs_app/Data/Kalender/CalenderEntry.dart';
-import 'package:mobile_unterhaltungs_app/Data/Person/Person.dart';
+import 'package:json_annotation/json_annotation.dart';
+part 'Attendance.g.dart';
 
-class Attendance extends CalenderEntry{
-  Attendance(Person person, this.confirmed,DateTime start, DateTime end):timeRange=DateTimeRange(start: start, end: end),super(person);
-  bool confirmed;
-  DateTimeRange timeRange;
+@JsonSerializable()
+class Attendance{
+  Attendance(this.approved, this.start, this.end);
+  bool approved;
+  DateTime start;
+  DateTime end;
+
+  factory Attendance.fromJson(Map<String, dynamic?> json)=>_$AttendanceFromJson(json);
+  Map<String, dynamic?> toJson()=>_$AttendanceToJson(this);
 }
