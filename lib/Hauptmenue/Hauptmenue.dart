@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_unterhaltungs_app/Kalender/CalenderView.dart';
 import 'package:mobile_unterhaltungs_app/Produktinformationen/ProductList.dart';
+import 'package:mobile_unterhaltungs_app/Mein Bereich/MeinBereich.dart';
 
 void main() {
   runApp(Hauptmenue());
@@ -112,9 +113,9 @@ class HauptmenueHomePageState extends State {
                   backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 104, 18, 18)),
                   foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
                 ),
-                onPressed: () {
-                  // Navigation zu Mein Bereich
-                },
+                onPressed: () => Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (_) => MeinBereich('Max Mustermann', 15))),// Navigation zu Mein Bereich
                 child: Text(
                   'Mein Bereich',
                   style: TextStyle(

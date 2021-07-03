@@ -3,6 +3,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:mobile_unterhaltungs_app/Kalender/CalenderView.dart';
 import 'package:mobile_unterhaltungs_app/Produktinformationen/ProductList.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:mobile_unterhaltungs_app/Mein Bereich/MeinBereich.dart';
 
 import 'Hauptmenue/Hauptmenue.dart';
 
@@ -36,7 +37,7 @@ class _MainMenuState extends State<MainMenu> {
     Hauptmenue(),
     CalenderView(),
     ProductList(),
-    Placeholder(),
+    MeinBereich('Max Mustermann', 15),
     Placeholder(),
   ];
 
