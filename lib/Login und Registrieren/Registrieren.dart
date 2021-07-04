@@ -2,9 +2,11 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:mobile_unterhaltungs_app/Login%20und%20Registrieren/Login.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,6 +44,7 @@ class RegistrierenHomePageState extends State {
   String errorTextPassword = ' ';
   bool _initialized = false;
   bool _error = false;
+  String positionDropdownValue = 'Mitarbeiter/in';
 
   // Asynchrone Funktion um FlutterFire zu initialisieren
   void initializeFlutterFire() async {
@@ -243,6 +246,64 @@ class RegistrierenHomePageState extends State {
               ],
             ),
 
+            // Positions-Eingabe
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  child: Text(
+                    'Position',
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontFamily: 'Arial',
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  alignment: Alignment.center,
+                  child: DropdownButtonFormField<String>(
+                    value: positionDropdownValue,
+                    iconSize: 30,
+                    isExpanded: true,
+                    style: const TextStyle(
+                      fontSize: 22,
+                      fontFamily: 'Arial',
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        positionDropdownValue = newValue!;
+                      });
+                    },
+                    items: <String>['Inhaber/in', 'Geschäftsführer/in', 'Mitarbeiter/in', 'Student/in', 'Buchhalter/in']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        child: Container (
+                          alignment: Alignment.center,
+                          child: Text(
+                            value = value,
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        value: value,
+                      );
+                    }).toList(),
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.all(0.0),
+                      border: OutlineInputBorder(),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
             // Registrieren-Button
             Container(
               margin: EdgeInsets.all(20.0),
@@ -262,6 +323,7 @@ class RegistrierenHomePageState extends State {
                   // Zur Anmeldung wechseln, sofern die Eingaben korrekt sind
                   if(firstNameValid && lastNameValid && passwordValid) {
                     Navigator.push(context, MaterialPageRoute(builder: (_) => Login(firstNameController.text, lastNameController.text, passwordController.text)));
+                    saveUserInCollection();
                   }
                 },
                 child: Text(
@@ -363,5 +425,50 @@ class RegistrierenHomePageState extends State {
     });
 
     return valid;
+  }
+
+  void saveUserInCollection() {
+
+    CollectionReference usersCollection = FirebaseFirestore.instance.collection('Benutzer');
+    CollectionReference positionCollection = FirebaseFirestore.instance.collection('Position');
+    int positionID = 2; // RollenID für Mitarbeiter/in als Standardwert
+    int userID = 0;
+    List users;
+
+    setState(() {
+
+      // RollenID zur jeweiligen Rolle ermitteln
+      positionCollection.where('Bezeichnung', isEqualTo: positionDropdownValue)
+          .get()
+          .then((snapshot) => {
+        snapshot.docs.forEach((doc) => {
+
+          positionID = int.parse(doc.id),
+
+          // Aktuellste BenutzerID holen
+          usersCollection
+              .get()
+              .then((snapshot) => {
+
+                // BenutzerID aktualisieren, falls bereits User vorhanden sind
+                // Sonst als erste ID "0" verwenden
+                // Hinweis: snapshot.size speichert die Länge der Collection
+                if(snapshot.size > 0)
+                  userID = snapshot.size,
+
+                // Benutzer in Datenbank hinzufügen
+                // Hinweis: Funktion befindet sich in "then"-Abschnitt, da das Hinzufügen
+                // erst nach Ermittlung der PositionsID und der aktuellen BenutzerID
+                // ausgeführt werden soll
+                usersCollection.doc(userID.toString()).set({
+                  'Vorname': firstNameController.text,
+                  'Nachname': lastNameController.text,
+                  'Position': positionID,
+                  'Passwort': passwordController.text
+                }),
+              }),
+        })
+      });
+    });
   }
 }
