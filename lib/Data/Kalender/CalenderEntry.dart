@@ -1,13 +1,15 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'Attendance.dart';
-import 'package:mobile_unterhaltungs_app/Data/Person/Person.dart';
 part 'CalenderEntry.g.dart';
 
-@JsonSerializable(explicitToJson: true)
+@JsonSerializable()
 class CalenderEntry{
-  CalenderEntry( this.owner,  this.attendance);
-  final Person owner;
-  final List<Attendance> attendance;
+  CalenderEntry( this.nachname,this.vorname, this.approved,this.start,this.end,this.type);
+  String vorname;
+  String nachname;
+  bool approved;
+  DateTime start;
+  DateTime end;
+  String type;
 
   factory CalenderEntry.fromJson(Map<String, dynamic?> json)=> _$CalenderEntryFromJson(json);
   Map<String,dynamic?> toJson()=> _$CalenderEntryToJson(this);

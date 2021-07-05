@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:intl/date_symbol_data_local.dart';
+import 'package:mobile_unterhaltungs_app/Data/Person/Person.dart';
 import 'package:mobile_unterhaltungs_app/Kalender/CalenderView.dart';
 import 'package:mobile_unterhaltungs_app/Produktinformationen/ProductList.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,11 +7,11 @@ import 'package:mobile_unterhaltungs_app/Mein Bereich/MeinBereich.dart';
 
 import 'Hauptmenue/Hauptmenue.dart';
 
-void main() {
-  initializeDateFormatting('de_DE').then((_) => runApp(MyApp()));
-}
-
 class MyApp extends StatelessWidget {
+  MyApp(this.user);
+
+  Person user;
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -20,40 +20,52 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: MainMenu(),
+      home: MainMenu(user),
     );
   }
 }
 
 class MainMenu extends StatefulWidget {
-  MainMenu({Key? key}) : super(key: key);
+  MainMenu(this.user);
+
+  Person user;
+
   @override
-  _MainMenuState createState() => _MainMenuState();
+  _MainMenuState createState() => _MainMenuState(user);
 }
 
 class _MainMenuState extends State<MainMenu> {
-  int _pageIndex=0;
-  List<Widget> pageList=<Widget>[
-    Hauptmenue(),
-    CalenderView(),
-    ProductList(),
-    MeinBereich('Max Mustermann', 15),
-    Placeholder(),
-  ];
+  _MainMenuState(this._user);
+
+  Person _user;
+  int _pageIndex = 0;
+  late List<Widget> pageList;
+
+  @override
+  void initState() {
+    pageList = <Widget>[
+      Hauptmenue(_user),
+      CalenderView(_user),
+      ProductList(),
+      MeinBereich(_user, 15),
+      Placeholder(),
+    ];
+    _pageIndex = 0;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body:pageList[_pageIndex],
+      body: pageList[_pageIndex],
       bottomNavigationBar: BottomNavigationBar(
-        type : BottomNavigationBarType.fixed,
+        type: BottomNavigationBarType.fixed,
         showSelectedLabels: false,
         showUnselectedLabels: false,
         currentIndex: _pageIndex,
-        onTap: (value){
+        onTap: (value) {
           setState(() {
-            _pageIndex=value;
+            _pageIndex = value;
           });
         },
         selectedItemColor: Colors.white,
@@ -76,7 +88,7 @@ class _MainMenuState extends State<MainMenu> {
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.notification_important ),
+            icon: Icon(Icons.notification_important),
             label: '',
           ),
         ],

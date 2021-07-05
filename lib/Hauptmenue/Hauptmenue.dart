@@ -2,36 +2,40 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile_unterhaltungs_app/Data/Person/Person.dart';
 import 'package:mobile_unterhaltungs_app/Kalender/CalenderView.dart';
 import 'package:mobile_unterhaltungs_app/Produktinformationen/ProductList.dart';
 import 'package:mobile_unterhaltungs_app/Mein Bereich/MeinBereich.dart';
 
-void main() {
-  runApp(Hauptmenue());
-}
-
 class Hauptmenue extends StatelessWidget {
+  Hauptmenue(this.user);
+
+  Person user;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Hauptmenue',
-
-      home: HauptmenueHomePage(title: '',),
+      home: HauptmenueHomePage(
+        user: user,
+      ),
     );
   }
 }
 
 class HauptmenueHomePage extends StatefulWidget {
-HauptmenueHomePage({Key? key, required this.title}) : super(key: key);
+  HauptmenueHomePage({Key? key, required this.user}) : super(key: key);
 
-  final String title;
+  Person user;
 
   @override
-  HauptmenueHomePageState createState() => HauptmenueHomePageState();
+  HauptmenueHomePageState createState() => HauptmenueHomePageState(user);
 }
 
 class HauptmenueHomePageState extends State {
+  HauptmenueHomePageState(this.user);
+
+  Person user;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +56,6 @@ class HauptmenueHomePageState extends State {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-
             // Kalender
             Container(
               margin: const EdgeInsets.all(5.0),
@@ -60,12 +63,16 @@ class HauptmenueHomePageState extends State {
               height: MediaQuery.of(context).size.height * 0.15,
               child: OutlinedButton(
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 104, 18, 18)),
-                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      Color.fromARGB(255, 104, 18, 18)),
+                  foregroundColor:
+                      MaterialStateProperty.all<Color>(Colors.white),
                 ),
                 onPressed: () => Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => CalenderView()),//Hier kommt der Aufruf der Seite
+                  MaterialPageRoute(
+                      builder: (_) =>
+                          CalenderView(user)), //Hier kommt der Aufruf der Seite
                 ),
                 child: Text(
                   'Kalender',
@@ -85,8 +92,10 @@ class HauptmenueHomePageState extends State {
               height: MediaQuery.of(context).size.height * 0.15,
               child: OutlinedButton(
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 104, 18, 18)),
-                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      Color.fromARGB(255, 104, 18, 18)),
+                  foregroundColor:
+                      MaterialStateProperty.all<Color>(Colors.white),
                 ),
                 onPressed: () {
                   // Navigation zu Chats
@@ -100,7 +109,6 @@ class HauptmenueHomePageState extends State {
                   ),
                 ),
               ),
-
             ),
 
             // Mein Bereich
@@ -110,12 +118,14 @@ class HauptmenueHomePageState extends State {
               height: MediaQuery.of(context).size.height * 0.15,
               child: OutlinedButton(
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 104, 18, 18)),
-                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      Color.fromARGB(255, 104, 18, 18)),
+                  foregroundColor:
+                      MaterialStateProperty.all<Color>(Colors.white),
                 ),
-                onPressed: () => Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (_) => MeinBereich('Max Mustermann', 15))),// Navigation zu Mein Bereich
+                onPressed: () => Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (_) => MeinBereich(user, 15))),
+                // Navigation zu Mein Bereich
                 child: Text(
                   'Mein Bereich',
                   style: TextStyle(
@@ -134,12 +144,16 @@ class HauptmenueHomePageState extends State {
               height: MediaQuery.of(context).size.height * 0.15,
               child: OutlinedButton(
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 104, 18, 18)),
-                  foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                      Color.fromARGB(255, 104, 18, 18)),
+                  foregroundColor:
+                      MaterialStateProperty.all<Color>(Colors.white),
                 ),
                 onPressed: () => Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (_) => ProductList()),//Hier kommt der Aufruf der Seite
+                  MaterialPageRoute(
+                      builder: (_) =>
+                          ProductList()), //Hier kommt der Aufruf der Seite
                 ),
                 child: Text(
                   'News',

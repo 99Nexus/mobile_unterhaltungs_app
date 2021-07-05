@@ -1,198 +1,150 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/material/text_field.dart';
-import 'package:mobile_unterhaltungs_app/Data/Kalender/Attendance.dart';
 import 'package:mobile_unterhaltungs_app/Data/Kalender/CalenderEntry.dart';
+import 'package:mobile_unterhaltungs_app/Data/Person/Person.dart';
+final calentryRef = FirebaseFirestore.instance
+    .collection('calenderentry')
+    .withConverter(
+        fromFirestore: (snapshots, _) =>
+            CalenderEntry.fromJson(snapshots.data()!),
+        toFirestore: (calenderentry, _) => calenderentry.toJson());
 
+class ArbeitszeitBeantragen extends StatelessWidget {
+  ArbeitszeitBeantragen({Key? key,required this.user})
+      : initialDate = DateTime.now(),
+        super(key: key);
+  Person user;
 
-final calentyRef = FirebaseFirestore.instance.collection('calenderentry').withConverter(
-    fromFirestore: (snapshots, _) => CalenderEntry.fromJson(snapshots.data()!),
-    toFirestore: (calenderentry, _) => calenderentry.toJson());
+  ArbeitszeitBeantragen.withinitDate(this.initialDate,this.user);
 
-
-
-/// This is the main application widget.
-class ArbeitszeitErfassen extends StatelessWidget {
-  const ArbeitszeitErfassen({Key? key}) : super(key: key);
-
-  static const String _title = 'Flutter Code Sample';
+  final DateTime initialDate;
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      restorationScopeId: 'app',
-      title: _title,
-      home: MyStatefulWidget(restorationId: 'main'),
+    return MaterialApp(
+      title: 'Urlaub Beantragen',
+      theme: ThemeData(
+        primarySwatch: Colors.red,
+      ),
+      home: OrderAttendance(initialDate,user),
     );
   }
 }
 
-/// This is the stateful widget that the main application instantiates.
-class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({Key? key, this.restorationId}) : super(key: key);
+class OrderAttendance extends StatefulWidget {
+  const OrderAttendance(this.initialDate,this.user);
 
-  final String? restorationId;
-
+  final DateTime initialDate;
+  final Person user;
   @override
-  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
+  _OrderAttendanceState createState() => _OrderAttendanceState(initialDate,user);
 }
 
-/// This is the private State class that goes with MyStatefulWidget.
-/// RestorationProperty objects can be used because of RestorationMixin.
-class _MyStatefulWidgetState extends State<MyStatefulWidget>
-    with RestorationMixin {
-  // In this example, the restoration ID for the mixin is passed in through
-  // the [StatefulWidget]'s constructor.
-  @override
-  String? get restorationId => widget.restorationId;
+class _OrderAttendanceState extends State<OrderAttendance> {
+  _OrderAttendanceState(this._initialDate,this._user)
+      : _start = _initialDate,
+        _end = _initialDate;
+  final Person _user;
+  final DateTime _initialDate;
+  DateTime _start;
+  DateTime _end;
+  DateTime _now = DateTime.now();
 
-  final RestorableDateTime _selectedDate =
-  RestorableDateTime(DateTime(2021, 7, 25));
-  late final RestorableRouteFuture<DateTime?> _restorableDatePickerRouteFuture =
-  RestorableRouteFuture<DateTime?>(
-    onComplete: _selectDate,
-    onPresent: (NavigatorState navigator, Object? arguments) {
-      return navigator.restorablePush(
-        _datePickerRoute,
-        arguments: _selectedDate.value.millisecondsSinceEpoch,
-      );
-    },
-  );
-
-  static Route<DateTime> _datePickerRoute(
-      BuildContext context,
-      Object? arguments,
-      ) {
-    return DialogRoute<DateTime>(
-      context: context,
-      builder: (BuildContext context) {
-        return DatePickerDialog(
-          restorationId: 'date_picker_dialog',
-          initialEntryMode: DatePickerEntryMode.calendarOnly,
-          initialDate: DateTime.fromMillisecondsSinceEpoch(arguments! as int),
-          firstDate: DateTime(2021, 1, 1),
-          lastDate: DateTime(2022, 1, 1),
-        );
-      },
-    );
+  String _timeparser(DateTime dateTime) {
+    return '${dateTime.hour > 9 ? dateTime.hour : '0${dateTime.hour}'}:${dateTime.minute > 9 ? dateTime.minute : '0${dateTime.minute}'}';
   }
 
   @override
-  void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
-    registerForRestoration(_selectedDate, 'selected_date');
-    registerForRestoration(
-        _restorableDatePickerRouteFuture, 'date_picker_route_future');
-  }
+  void initState() {}
 
-  void _selectDate(DateTime? newSelectedDate) {
-    if (newSelectedDate != null) {
-      setState(() {
-        _selectedDate.value = newSelectedDate;
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(
-              'Selected: ${_selectedDate.value.day}/${_selectedDate.value.month}/${_selectedDate.value.year}'),
-        ));
-      });
-    }
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-
-    Future<void> update() async{
-      final CalenderEntry = await calentyRef.get();
-      WriteBatch batch = FirebaseFirestore.instance.batch();
-
-      for(final entry in CalenderEntry.docs)
-        {
-          batch.update(entry.reference, {'attendance': Attendance(
-              true, DateTime(2021, 07, 06, 10, 00),
-              DateTime(2021, 07, 06, 15, 00))});
-        }
-      await batch.commit();
-    }
     return Scaffold(
       appBar: AppBar(
-          title: Text(
-              'Arbeitszeit buchen'
-          )
+        title: Text('Arbeitszeit Buchen'),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Column(
-          children: [
-            Title(color: Colors.black,
-             child: Text(
-               'Datum'
-             ),
-            ),
-          OutlinedButton(
-          onPressed: () {
-            _restorableDatePickerRouteFuture.present();
-          },
-          child: const Text('Start auswählen')
-          ),
-          OutlinedButton(
-              onPressed: () {
-                _restorableDatePickerRouteFuture.present();
-              },
-              child: const Text('Ende auswählen')
-          ),
-          ]
-          ),
-          Container(
-            width: 200.0,
-            child: TextField(
-            obscureText: false,
-              textAlign: TextAlign.justify,
-            style: TextStyle(
-            fontSize: 15.0,
-            height: 1.5,
-            ),
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Arbeitsstunden eintragen',
-            ),
-          ),
-          ),
-          Container(
-            width: 200.0,
-            child: TextField(
-              maxLines: 5,
-              maxLength: 120,
-              textAlign: TextAlign.justify,
-              style: TextStyle(
-                fontSize: 15.0,
-                height: 2.5,
-           ),
-              decoration: InputDecoration(
-                hintText: 'Tätigkeit eintragen',
-                border: OutlineInputBorder(),
+          Form(
+              child: Column(
+            children: [
+              InputDatePickerFormField(
+                firstDate: DateTime(_now.year - 1, _now.month, _now.day),
+                lastDate: DateTime(_now.year + 1, _now.month, _now.day),
+                initialDate: _initialDate,
               ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.center,
-          ),
+              TextFormField(
+                decoration: InputDecoration(
+                    icon: Icon(Icons.access_time),
+                    hintText: _timeparser(_start),
+                    hintStyle: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      color: Colors.black,
+                    )),
+                onTap: () {
+                  showTimePicker(
+                          context: context,
+                          initialTime: TimeOfDay(hour: 8, minute: 0))
+                      .then((time) {
+                    if (time != null) {
+                      setState(() {
+                        _start = DateTime(_start.year, _start.month, _start.day,
+                            time.hour, time.minute);
+                        print(_start.toString());
+                      });
+                    }
+                  });
+                },
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                    icon: Icon(Icons.access_time),
+                    hintText: _timeparser(_end),
+                    hintStyle: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      color: Colors.black,
+                    )),
+                onTap: () {
+                  showTimePicker(
+                          context: context,
+                          initialTime: TimeOfDay(hour: 16, minute: 0))
+                      .then((time) {
+                    if (time != null) {
+                      setState(() {
+                        _end = DateTime(_end.year, _end.month, _end.day,
+                            time.hour, time.minute);
+                        print(_start.toString());
+                      });
+                    }
+                  });
+                },
+              )
+            ],
+          )),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              RaisedButton(
-                onPressed: () {Navigator.pop(context);}, //TODO Pop funktioniert nicht richtig
-                child: Text('Löschen'),
-              ),
-              SizedBox(width: 25),
-              RaisedButton(
-                onPressed: () {update();},
-                child: Text('Speichern'),
-              )
+            children: [
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('Abbrechen')),
+              ElevatedButton(
+                  onPressed: () {
+                    calentryRef.add(CalenderEntry(_user.nachname,_user.vorname,true, _start,_end,'attendance'));
+                    Navigator.pop(context);
+                    },
+                  child: Text('Speichern'))
             ],
           )
         ],
-        ),
-
-      );
+      ),
+    );
   }
 }

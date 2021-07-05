@@ -1,21 +1,17 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mobile_unterhaltungs_app/Data/Person/Person.dart';
-import 'package:mobile_unterhaltungs_app/Mein%20Bereich/UrlaubBeantragen.dart';
-import 'package:mobile_unterhaltungs_app/Produktinformationen/ProductList.dart';
-import 'NameContant.dart';
 import 'package:mobile_unterhaltungs_app/Mein Bereich/ArbeitszeitBuchen.dart';
 
 class MeinBereich extends StatelessWidget {
-  String _name;
+  Person user;
   int _arbeitszeit;
 
   //int _gebUrlaubstage;
   //int _vorUrlaubstage;
 
-  MeinBereich(this._name, this._arbeitszeit);
+  MeinBereich(this.user, this._arbeitszeit);
 
   @override
   Widget build(BuildContext context) {
@@ -32,17 +28,13 @@ class MeinBereich extends StatelessWidget {
               Column(
                 children: [
                   Text(
-                          _name,
-                          style: TextStyle(
-                          fontSize: 18.0
-                        ),
-                    ),
-                      Text(
-                          'Restarbeitszeit beträgt: $_arbeitszeit',
-                            style: TextStyle(
-                            fontSize: 18.0
-                        ),
-                      ),
+                    '${user.vorname} ${user.nachname}',
+                    style: TextStyle(fontSize: 18.0),
+                  ),
+                  Text(
+                    'Restarbeitszeit beträgt: $_arbeitszeit',
+                    style: TextStyle(fontSize: 18.0),
+                  ),
                 ],
               ),
             ],
@@ -60,8 +52,9 @@ class MeinBereich extends StatelessWidget {
                   onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (_) =>
-                            ArbeitszeitErfassen()), //Hier kommt der Aufruf der Seite
+                        builder: (_) => ArbeitszeitBeantragen(
+                              user: user,
+                            )), //Hier kommt der Aufruf der Seite
                   ),
                   child: Text(
                     'Arbeitszeit eintragen',
@@ -72,7 +65,7 @@ class MeinBereich extends StatelessWidget {
                 ),
                 color: Colors.teal[100],
               ),
-              Container(
+              /*Container(
                 child: ElevatedButton(
                   onPressed: () => Navigator.push(
                     context,
@@ -88,7 +81,7 @@ class MeinBereich extends StatelessWidget {
                   ),
                 ),
                 color: Colors.teal[200],
-              ),
+              ),*/
               Container(
                 child: ElevatedButton(
                   onPressed: () {

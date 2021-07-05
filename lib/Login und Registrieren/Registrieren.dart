@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:mobile_unterhaltungs_app/Login%20und%20Registrieren/Login.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -322,7 +321,7 @@ class RegistrierenHomePageState extends State {
 
                   // Zur Anmeldung wechseln, sofern die Eingaben korrekt sind
                   if(firstNameValid && lastNameValid && passwordValid) {
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => Login(firstNameController.text, lastNameController.text, passwordController.text)));
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => Login(firstNameController.text, lastNameController.text, passwordController.text)));
                     saveUserInCollection();
                   }
                 },

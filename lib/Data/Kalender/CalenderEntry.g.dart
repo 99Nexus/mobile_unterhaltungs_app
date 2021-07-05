@@ -8,15 +8,21 @@ part of 'CalenderEntry.dart';
 
 CalenderEntry _$CalenderEntryFromJson(Map<String, dynamic> json) {
   return CalenderEntry(
-    Person.fromJson(json['owner'] as Map<String, dynamic>),
-    (json['attendance'] as List<dynamic>)
-        .map((e) => Attendance.fromJson(e as Map<String, dynamic>))
-        .toList(),
+    json['nachname'] as String,
+    json['vorname'] as String,
+    json['approved'] as bool,
+    DateTime.parse(json['start'] as String),
+    DateTime.parse(json['end'] as String),
+    json['type'] as String,
   );
 }
 
 Map<String, dynamic> _$CalenderEntryToJson(CalenderEntry instance) =>
     <String, dynamic>{
-      'owner': instance.owner.toJson(),
-      'attendance': instance.attendance.map((e) => e.toJson()).toList(),
+      'vorname': instance.vorname,
+      'nachname': instance.nachname,
+      'approved': instance.approved,
+      'start': instance.start.toIso8601String(),
+      'end': instance.end.toIso8601String(),
+      'type': instance.type,
     };
