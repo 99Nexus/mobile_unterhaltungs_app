@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,27 +18,31 @@ class _ProductListState extends State<ProductList>{
 
 
   void getPostsData() {
-    List<dynamic> responseList = DATA_FASHION;
+    List<dynamic> responseList = DATA_ALL;
     List<Widget> listItems = [];
     responseList.forEach((post) {
       listItems.add(Container(
           height: 150,
           margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+
           decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20.0)), color: Colors.white, boxShadow: [
             BoxShadow(color: Colors.black.withAlpha(100), blurRadius: 10.0),
           ]),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
             child: Row(
-
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      post["name:"],
-                      style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                    Expanded(
+                      child: Text(
+                        post["name:"],
+                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                     Text(
                       post["brand"],
@@ -54,6 +57,7 @@ class _ProductListState extends State<ProductList>{
                     )
                   ],
                 ),
+
               ],
             ),
           )));
@@ -114,45 +118,9 @@ class _ProductListState extends State<ProductList>{
                 height: 10,
               ),
 
-              //Bsp.
-              Container(
-                  height: 120,
-                  margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20.0)), color: Colors.white, boxShadow: [
-                    BoxShadow(color: Colors.black.withAlpha(100), blurRadius: 10.0),
-                  ]),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "T-SHIRT AMANA",
-                              style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              "MbyM",
-                              style: const TextStyle(fontSize: 17, color: Colors.grey),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              "29.95",
-                              style: const TextStyle(fontSize: 25, color: Colors.black, fontWeight: FontWeight.bold),
-                            )
-                          ],
-                        ),
-
-                      ],
-                    ),
-                  )),
-
               Expanded(
                   child: ListView.builder(
+
                       controller: controller,
                       itemCount: itemsData.length,
                       physics: BouncingScrollPhysics(),
@@ -171,42 +139,6 @@ class _ProductListState extends State<ProductList>{
   }
 }
 
-
-/*return Scaffold(
-appBar: AppBar(title: Text("Produktliste"),
-),
-body:
-ListView(
-children: <Widget>[
-ListTile(
-leading: Icon(Icons.shopping_bag),
-title: Text("Pulli"),
-),
-ListTile(
-leading: Icon(Icons.local_drink),
-title: Text("Roku Gin"),
-),
-ListTile(
-leading: Icon(Icons.book),
-title: Text("IT'S ALL GOOD"),
-),
-ListTile(
-leading: Icon(Icons.fastfood),
-title: Text("LAKRITZ 135G WASSERMELONE ERDBEERE"),
-),
-ListTile(
-leading: Icon(Icons.games),
-title: Text("WER IM RAUM?"),
-),
-ListTile(
-leading: Icon(Icons.add),
-title: Text("Neues Produkt hinzufügen"),
-),
-]
-
-)
-);*/
-
 class MyDropDownWidget extends StatefulWidget {
   const MyDropDownWidget({Key? key}) : super(key: key);
 
@@ -215,7 +147,11 @@ class MyDropDownWidget extends StatefulWidget {
 }
 
 class _MyDropDownWidgetState extends State<MyDropDownWidget> {
-  String dropdownValue = 'Alle';
+  String dropdownValue = 'ALLE';
+
+  String getddv(){
+    return this.dropdownValue;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -230,7 +166,7 @@ class _MyDropDownWidgetState extends State<MyDropDownWidget> {
           dropdownValue = newValue!;
         });
       },
-      items: <String>['Alle', 'Buecher', 'Kleidung', 'Essen']
+      items: <String>['ALLE', 'BUECHER', 'KLEIDUNG', 'ESSEN']
           .map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,
