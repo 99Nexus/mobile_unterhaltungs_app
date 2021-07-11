@@ -9,6 +9,8 @@ class Product{
   String description;
   String category;
 
+
   factory Product.fromJson(Map<String, dynamic?> json)=>_$ProductFromJson(json);
+
   Map<String, dynamic?> toJson()=>_$ProductToJson(this);
 }

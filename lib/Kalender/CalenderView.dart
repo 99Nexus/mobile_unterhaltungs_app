@@ -29,6 +29,8 @@ class _CalenderViewState extends State<CalenderView> {
 
   //Query aller Einträge
   late Query<CalenderEntry> _calentryQuery;
+
+  //TODO :Was ist das für eine Variable calennderentry ist das bewusst?
   late Stream<QuerySnapshot<CalenderEntry>> _calennderentry;
 
   //Anzeigeformat des Kalenders
