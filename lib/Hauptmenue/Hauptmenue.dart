@@ -40,15 +40,6 @@ class HauptmenueHomePageState extends State {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /*appBar: AppBar(
-        title: Image.asset(
-          'images/teaser-unterhaltung.png',
-        ),
-        centerTitle: true,
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        shadowColor: Colors.transparent,
-        toolbarHeight: 80,
-      ),*/
       body: Container(
         alignment: Alignment.center,
 
