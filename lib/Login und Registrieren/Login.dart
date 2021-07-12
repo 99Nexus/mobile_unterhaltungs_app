@@ -379,7 +379,7 @@ class LoginHomePageState extends State {
                     ),
                     onPressed: () {
 
-                      Navigator.pushReplacement(context,
+                      Navigator.push(context,
                           MaterialPageRoute(builder: (_) => ProductList()));
                     },
                     child: Text(

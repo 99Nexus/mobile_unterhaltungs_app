@@ -1,4 +1,3 @@
-import 'dart:collection';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:mobile_unterhaltungs_app/Produktinformationen/ProductDetails.dart';
 import 'Product.dart';
 import 'search_widget.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 
 final productentryRef = FirebaseFirestore.instance
@@ -151,7 +149,7 @@ class _ProductListState extends State<ProductList>{
                                         ),
 
                                         TextButton(
-                                            onPressed: () => Navigator.pushReplacement(context,
+                                            onPressed: () => Navigator.push(context,
                                                 MaterialPageRoute(builder: (_) => ProductDetails(data.docs[index].data()))),
                                             child: const Text(
                                               'mehr Anzeigen',

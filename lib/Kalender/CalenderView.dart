@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_unterhaltungs_app/Data/Kalender/CalenderEntry.dart';
 import 'package:mobile_unterhaltungs_app/Data/Person/Person.dart';
 import 'package:mobile_unterhaltungs_app/Mein%20Bereich/ArbeitszeitBeantragen.dart';
+import 'package:mobile_unterhaltungs_app/Mein%20Bereich/UrlaubBeantragen.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 //Abrufen aller Kalendereinträge, einbezogen wird die generierung in und aus JSON Dokumenten
@@ -34,7 +35,7 @@ class _CalenderViewState extends State<CalenderView> {
   late Stream<QuerySnapshot<CalenderEntry>> _calennderentry;
 
   //Anzeigeformat des Kalenders
-  CalendarFormat _calendarFormat = CalendarFormat.month;
+  CalendarFormat _calendarFormat = CalendarFormat.week;
 
   //Tag welcher in der App fokussiert werden soll
   DateTime _focusedDay = DateTime.now();
@@ -76,9 +77,6 @@ class _CalenderViewState extends State<CalenderView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Kalender"),
-      ),
       body: Column(children: <Widget>[
         //Erzeugung des Kalenders
         TableCalendar(
@@ -149,27 +147,22 @@ class _CalenderViewState extends State<CalenderView> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             ElevatedButton(
-              //TODO Funktionalität hinterlegen
+              //TODO Farbe anpassen
               onPressed: () {
-                showDatePicker(
-                        context: context,
-                        initialDate: _focusedDay,
-                        firstDate: DateTime(2001),
-                        lastDate: DateTime(2022))
-                    .then((date) {
-                  setState(() {
-                    _dateTime = date!;
-                    print('$_dateTime');
-                  });
-                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => UrlaubBeantragen.withinitDate(_selectedDay!, _user)),
+                );
+
               },
-              child: Text('Urlaub Buchen'),
+              child: Text('Urlaub buchen'),
               style: ElevatedButton.styleFrom(
                 textStyle: TextStyle(fontSize: 20),
               ),
             ),
             //Arbeitszeiten werden gesetzt indem das ausgewählte Datum mit übergeben werden
-            ElevatedButton(
+            ElevatedButton(//TODO farbe anpassen
               onPressed: () {
                 Navigator.push(
                   context,
