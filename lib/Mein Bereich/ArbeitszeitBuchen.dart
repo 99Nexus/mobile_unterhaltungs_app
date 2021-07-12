@@ -137,7 +137,7 @@ class _OrderAttendanceState extends State<OrderAttendance> {
                   child: Text('Abbrechen')),
               ElevatedButton(
                   onPressed: () {
-                    calentryRef.add(CalenderEntry(_user.nachname,_user.vorname,true, _start,_end,'attendance'));
+                    calentryRef.add(CalenderEntry(_user.lastName,_user.firstName,true, _start,_end,'attendance'));
                     Navigator.pop(context);
                     },
                   child: Text('Speichern'))

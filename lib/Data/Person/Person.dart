@@ -3,10 +3,19 @@ part 'Person.g.dart';
 
 @JsonSerializable()
 class Person{
-  Person(this.vorname,  this.nachname);
-  String vorname;
-  String nachname;
+
+  String firstName = '';
+  String lastName = '';
+  String position = '';
+  String email = '';
+  String password = '';
+  String uid = '';
+
+  Person(this.firstName, this.lastName, this.position, this.email, this.password);
+
+  Person.withUID(this.uid);
+
 
   factory Person.fromJson(Map<String, dynamic?> json)=>_$PersonFromJson(json);
-  Map<String, dynamic?> toJson() =>_$PersonToJson(this);
+  Map<String, dynamic?> toJson() => _$PersonToJson(this);
 }

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_unterhaltungs_app/Controller/AuthController.dart';
 import 'package:mobile_unterhaltungs_app/Data/Person/Person.dart';
 import 'package:mobile_unterhaltungs_app/Kalender/CalenderView.dart';
 import 'package:mobile_unterhaltungs_app/Produktinformationen/ProductList.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mobile_unterhaltungs_app/Mein Bereich/MeinBereich.dart';
-
 import 'Hauptmenue/Hauptmenue.dart';
+import 'package:provider/provider.dart';
 
 class MyApp extends StatelessWidget {
   MyApp(this.user);

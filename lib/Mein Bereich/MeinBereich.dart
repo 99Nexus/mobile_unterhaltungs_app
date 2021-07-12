@@ -28,7 +28,7 @@ class MeinBereich extends StatelessWidget {
               Column(
                 children: [
                   Text(
-                    '${user.vorname} ${user.nachname}',
+                    '${user.firstName} ${user.lastName}',
                     style: TextStyle(fontSize: 18.0),
                   ),
                   Text(
