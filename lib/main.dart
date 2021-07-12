@@ -56,6 +56,15 @@ class _MainMenuState extends State<MainMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Image.asset(
+          'images/teaser-unterhaltung.png',
+        ),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        shadowColor: Colors.transparent,
+        toolbarHeight: 80,
+      ),
       backgroundColor: Colors.white,
       body: pageList[_pageIndex],
       bottomNavigationBar: BottomNavigationBar(

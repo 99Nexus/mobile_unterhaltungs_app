@@ -310,7 +310,8 @@ class RegistrierenHomePageState extends State {
               height: (MediaQuery.of(context).size.width * 0.5) * 0.3,
               child: OutlinedButton(
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 104, 18, 18)),
+                  backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(
+                      255, 104, 18, 18)),
                   foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
                 ),
                 onPressed: () {
