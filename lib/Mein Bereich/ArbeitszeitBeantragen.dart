@@ -108,10 +108,30 @@ class _OrderAttendanceState extends State<OrderAttendance> {
                 ),
                 child: Column(
                   children: [
-                    InputDatePickerFormField(
-                      firstDate: DateTime(_now.year - 1, _now.month, _now.day),
-                      lastDate: DateTime(_now.year + 1, _now.month, _now.day),
-                      initialDate: _initialDate,
+                    Form(
+                      child:
+                      TextFormField(
+
+                        decoration: InputDecoration(
+                            icon: Icon(Icons.access_time),
+                            hintText: _start.toString(),
+                            hintStyle: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              color: Colors.black,
+                            )),
+
+                        onTap: () {showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2001),
+                            lastDate: DateTime(2022))
+                            .then((date) {
+                          setState(() {
+                            _start = date!;
+                            print('$_start');
+                          });
+                        });},
+                      ),
                     ),
                     TextFormField(
                       decoration: InputDecoration(
