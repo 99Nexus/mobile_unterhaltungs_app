@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_unterhaltungs_app/Controller/AuthController.dart';
 import 'package:mobile_unterhaltungs_app/Data/Person/Person.dart';
 import 'package:mobile_unterhaltungs_app/Kalender/CalenderView.dart';
+import 'package:mobile_unterhaltungs_app/Mein%20Bereich/ArbeitszeitBeantragen.dart';
 import 'package:mobile_unterhaltungs_app/Produktinformationen/ProductList.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mobile_unterhaltungs_app/Mein Bereich/MeinBereich.dart';
@@ -48,7 +49,9 @@ class _MainMenuState extends State<MainMenu> {
       Hauptmenue(_user),
       CalenderView(_user),
       ProductList(),
-      MeinBereich(_user, 15),
+      MeinBereich(_user, 15, 0),
+      //ArbeitszeitBeantragen(_user),
+      //UrlaubBeantragen(_user)
       Placeholder(),
     ];
     _pageIndex = 0;

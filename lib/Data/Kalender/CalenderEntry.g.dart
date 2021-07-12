@@ -8,21 +8,27 @@ part of 'CalenderEntry.dart';
 
 CalenderEntry _$CalenderEntryFromJson(Map<String, dynamic> json) {
   return CalenderEntry(
-    json['Nachname'] as String,
-    json['Vorname'] as String,
-    json['Approved'] as bool,
-    DateTime.parse(json['Start'] as String),
-    DateTime.parse(json['Ende'] as String),
-    json['Typ'] as String,
+    json['nachname'] as String,
+    json['vorname'] as String,
+    json['approved'] as bool,
+    DateTime.parse(json['start'] as String),
+    DateTime.parse(json['end'] as String),
+    json['type'] as String,
+    json['arbeitszeitStunde'] as int,
+    json['taetigkeiten'] as String,
+    json['arbeitszeitMinute'] as int,
   );
 }
 
 Map<String, dynamic> _$CalenderEntryToJson(CalenderEntry instance) =>
     <String, dynamic>{
-      'Vorname': instance.vorname,
-      'Nachname': instance.nachname,
-      'Approved': instance.approved,
-      'Start': instance.start.toIso8601String(),
-      'Ende': instance.end.toIso8601String(),
-      'Typ': instance.type,
+      'vorname': instance.vorname,
+      'nachname': instance.nachname,
+      'approved': instance.approved,
+      'start': instance.start.toIso8601String(),
+      'end': instance.end.toIso8601String(),
+      'type': instance.type,
+      'arbeitszeitStunde': instance.arbeitszeitStunde,
+      'arbeitszeitMinute': instance.arbeitszeitMinute,
+      'taetigkeiten': instance.taetigkeiten,
     };

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_unterhaltungs_app/Data/Kalender/CalenderEntry.dart';
 import 'package:mobile_unterhaltungs_app/Data/Person/Person.dart';
-import 'package:mobile_unterhaltungs_app/Mein%20Bereich/ArbeitszeitBuchen.dart';
+import 'package:mobile_unterhaltungs_app/Mein%20Bereich/ArbeitszeitBeantragen.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 //Abrufen aller Kalendereinträge, einbezogen wird die generierung in und aus JSON Dokumenten

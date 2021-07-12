@@ -115,7 +115,7 @@ class HauptmenueHomePageState extends State {
                       MaterialStateProperty.all<Color>(Colors.white),
                 ),
                 onPressed: () => Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (_) => MeinBereich(user, 15))),
+                    MaterialPageRoute(builder: (_) => MeinBereich(user, 15,0))),
                 // Navigation zu Mein Bereich
                 child: Text(
                   'Mein Bereich',
