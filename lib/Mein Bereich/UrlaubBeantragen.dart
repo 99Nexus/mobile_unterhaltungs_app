@@ -4,6 +4,7 @@ import 'package:mobile_unterhaltungs_app/Data/Person/Person.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_unterhaltungs_app/Data/Kalender/Vacation.dart';
+import 'package:intl/intl.dart';
 
 final vacationRef = FirebaseFirestore.instance
     .collection('vacation')
@@ -49,18 +50,20 @@ class OrderAttendance extends StatefulWidget {
 
 class _OrderAttendanceState extends State<OrderAttendance> {
   _OrderAttendanceState(this._initialDate,this._user)
-      : _start = _initialDate,
-        _end = _initialDate;
+      : _urlaubsbeginn = _initialDate,
+        _urlaubsende = _initialDate;
   final Person _user;
   final DateTime _initialDate;
-  DateTime _start;
-  DateTime _end;
+
   DateTime _now = DateTime.now();
+  DateTime _urlaubsbeginn;
+  DateTime _urlaubsende;
   int _insgesamtGebTage = 0;
   int _nochTage = 30;
   int _gebuchteTage = 0;
-  DateTime _urlaubsbeginn = DateTime.now();
-  DateTime _urlaubsende = DateTime.now();
+
+
+
 
   String _timeparser(DateTime dateTime) {
     return '${dateTime.hour > 9 ? dateTime.hour : '0${dateTime.hour}'}:${dateTime.minute > 9 ? dateTime.minute : '0${dateTime.minute}'}';
@@ -78,7 +81,7 @@ class _OrderAttendanceState extends State<OrderAttendance> {
   {
     setState(() {
 
-        _gebuchteTage = _end.day - _start.day;
+        _gebuchteTage = _urlaubsende.day - _urlaubsbeginn.day;
 
       if(_gebuchteTage < 0)
         {
@@ -95,8 +98,6 @@ class _OrderAttendanceState extends State<OrderAttendance> {
         }
       });
   }
-
-
 
   void updateUebrigeTage()
   {
@@ -155,10 +156,11 @@ class _OrderAttendanceState extends State<OrderAttendance> {
 
                   decoration: InputDecoration(
                       icon: Icon(Icons.access_time),
-                      hintText: _start.toString(),
+                      hintText: _urlaubsbeginn.day.toString() +"-"+ _urlaubsbeginn.month.toString() +"-"+ _urlaubsbeginn.year.toString(),
                       hintStyle: TextStyle(
                         fontWeight: FontWeight.normal,
                         color: Colors.black,
+
                       )),
 
                   onTap: () {showDatePicker(
@@ -168,13 +170,14 @@ class _OrderAttendanceState extends State<OrderAttendance> {
                       lastDate: DateTime(2022))
                       .then((date) {
                     setState(() {
-                      _start = date!;
-                      print('$_start');
+                      _urlaubsbeginn = date!;
+                      print('$_urlaubsbeginn');
 
 
                       updateGebuchteTage();
-                      updateInsgesamtGebuchteTage();
                       updateUebrigeTage();
+                      updateInsgesamtGebuchteTage();
+
                     });
                   });},
                 ),
@@ -205,7 +208,7 @@ class _OrderAttendanceState extends State<OrderAttendance> {
 
                   decoration: InputDecoration(
                       icon: Icon(Icons.access_time),
-                      hintText: _end.toString(),
+                      hintText: _urlaubsende.day.toString() +"-"+ _urlaubsende.month.toString() +"-"+ _urlaubsende.year.toString(),
                       hintStyle: TextStyle(
                         fontWeight: FontWeight.normal,
                         color: Colors.black,
@@ -218,12 +221,13 @@ class _OrderAttendanceState extends State<OrderAttendance> {
                       lastDate: DateTime(2022))
                       .then((date) {
                     setState(() {
-                      _end = date!;
-                      print('$_end');
+                      _urlaubsende = date!;
+                      print('$_urlaubsende');
 
                       updateGebuchteTage();
-                      updateInsgesamtGebuchteTage();
                       updateUebrigeTage();
+                      updateInsgesamtGebuchteTage();
+
 
                     });
                   });},
@@ -246,6 +250,9 @@ class _OrderAttendanceState extends State<OrderAttendance> {
               ElevatedButton(
                   onPressed: () {
                     vacationRef.add(Vacation(_user.firstName, _user.lastName, _insgesamtGebTage, _nochTage, _gebuchteTage, _urlaubsbeginn, _urlaubsende));
+
+                    vacationRef.add(Vacation(_user.firstName, _user.lastName, _insgesamtGebTage, _nochTage, _gebuchteTage, _urlaubsbeginn, _urlaubsende));
+
 
                     Navigator.pop(context);
                   },

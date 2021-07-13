@@ -11,9 +11,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 final calentryRef = FirebaseFirestore.instance
     .collection('calenderentry')
     .withConverter(
-        fromFirestore: (snapshots, _) =>
-            CalenderEntry.fromJson(snapshots.data()!),
-        toFirestore: (calenderentry, _) => calenderentry.toJson());
+    fromFirestore: (snapshots, _) =>
+        CalenderEntry.fromJson(snapshots.data()!),
+    toFirestore: (calenderentry, _) => calenderentry.toJson());
 
 class ArbeitszeitBeantragen extends StatelessWidget {
   ArbeitszeitBeantragen({Key? key, required this.user})
@@ -99,96 +99,93 @@ class _OrderAttendanceState extends State<OrderAttendance> {
           ),
           Form(
               child: Column(
-            children: [
-              Container(
-                width: ourwidth,
-                margin: const EdgeInsets.all(20.0),
-                decoration: BoxDecoration(
-                  border: Border.all(width: 3.0, color: Colors.black),
-                ),
-                child: Column(
-                  children: [
-                    Form(
-                      child:
-                      TextFormField(
-
-                        decoration: InputDecoration(
-                            icon: Icon(Icons.access_time),
-                            hintText: _start.toString(),
-                            hintStyle: TextStyle(
-                              fontWeight: FontWeight.normal,
-                              color: Colors.black,
-                            )),
-
-                        onTap: () {showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(2001),
-                            lastDate: DateTime(2022))
-                            .then((date) {
-                          setState(() {
-                            _start = date!;
-                            print('$_start');
-                          });
-                        });},
-                      ),
+                children: [
+                  Container(
+                    width: ourwidth,
+                    margin: const EdgeInsets.all(20.0),
+                    decoration: BoxDecoration(
+                      border: Border.all(width: 3.0, color: Colors.black),
                     ),
-                    TextFormField(
-                      decoration: InputDecoration(
-                          icon: Icon(Icons.access_time),
-                          hintText: _timeparser(_start),
-                          hintStyle: TextStyle(
-                            fontWeight: FontWeight.normal,
-                            color: Colors.black,
-                          )),
-                      onTap: () {
-                        showTimePicker(
+                    child: Column(
+                      children: [
+                        TextFormField(
+
+                          decoration: InputDecoration(
+                              icon: Icon(Icons.access_time),
+                              hintText: _start.day.toString() +"-"+ _start.month.toString() +"-"+ _start.year.toString(),
+                              hintStyle: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                color: Colors.black,
+                              )),
+
+                          onTap: () {showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(2001),
+                              lastDate: DateTime(2022))
+                              .then((date) {
+                            setState(() {
+                              _start = date!;
+                              print('$_start');
+                            });
+                          });},
+                        ),
+                        TextFormField(
+                          decoration: InputDecoration(
+                              icon: Icon(Icons.access_time),
+                              hintText: _timeparser(_start),
+                              hintStyle: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                color: Colors.black,
+                              )),
+                          onTap: () {
+                            showTimePicker(
                                 context: context,
                                 initialTime: TimeOfDay(hour: 8, minute: 0))
-                            .then((time) {
-                          if (time != null) {
-                            setState(() {
-                              _start = DateTime(_start.year, _start.month,
-                                  _start.day, time.hour, time.minute);
-                              _arbeitszeitStunde = _end.hour - _start.hour;
-                              _arbeitszeitMinute = _end.minute - _start.minute;
+                                .then((time) {
+                              if (time != null) {
+                                setState(() {
+                                  _start = DateTime(_start.year, _start.month,
+                                      _start.day, time.hour, time.minute);
+                                  _arbeitszeitStunde = _end.hour - _start.hour;
+                                  _arbeitszeitMinute = _end.minute - _start.minute;
 
-                              print(_start.toString());
+                                  print(_start.toString());
+                                });
+                              }
                             });
-                          }
-                        });
-                      },
-                    ),
-                    TextFormField(
-                      decoration: InputDecoration(
-                          icon: Icon(Icons.access_time),
-                          hintText: _timeparser(_end),
-                          hintStyle: TextStyle(
-                            fontWeight: FontWeight.normal,
-                            color: Colors.black,
-                          )),
-                      onTap: () {
-                        showTimePicker(
+                          },
+                        ),
+                        TextFormField(
+                          decoration: InputDecoration(
+                              icon: Icon(Icons.access_time),
+                              hintText: _timeparser(_end),
+                              hintStyle: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                color: Colors.black,
+                              )),
+                          onTap: () {
+                            showTimePicker(
                                 context: context,
                                 initialTime: TimeOfDay(hour: 16, minute: 0))
-                            .then((time) {
-                          if (time != null) {
-                            setState(() {
-                              _end = DateTime(_end.year, _end.month, _end.day,
-                                  time.hour, time.minute);
-                              _arbeitszeitStunde = _end.hour - _start.hour;
-                              _arbeitszeitMinute = _end.minute - _start.minute;
-                              print(_start.toString());
+                                .then((time) {
+                              if (time != null) {
+                                setState(() {
+                                  _end = DateTime(_end.year, _end.month, _end.day,
+                                      time.hour, time.minute);
+                                  _arbeitszeitStunde = _end.hour - _start.hour;
+                                  _arbeitszeitMinute = _end.minute - _start.minute;
+                                  print(_start.toString());
+                                });
+                              }
                             });
-                          }
-                        });
-                      },
+                          },
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              )
-            ],
-          )),
+                  )
+                ],
+              )),
           Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
             Text(
               'Arbeitsstunden',
@@ -256,7 +253,7 @@ class _OrderAttendanceState extends State<OrderAttendance> {
                         'attendance',
                         _arbeitszeitStunde,
                         _taetigkeit,
-                      _arbeitszeitMinute));
+                        _arbeitszeitMinute));
                     Navigator.pop(context);
                   },
                   child: Text('Speichern'))
