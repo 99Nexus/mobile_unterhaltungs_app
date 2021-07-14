@@ -145,17 +145,19 @@ class _ProductListState extends State<ProductList>{
                                         Text(
                                           '${itemsData[index].data().price}€',
                                           //'${data.docs[index].data().price}',
-                                          style: const TextStyle(fontSize: 15, color: Colors.black, fontWeight: FontWeight.bold),
+                                          style: const TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),
                                         ),
-
+                                        SizedBox(width: 20,),
                                         TextButton(
                                             onPressed: () => Navigator.push(context,
                                                 MaterialPageRoute(builder: (_) => ProductDetails(data.docs[index].data()))),
                                             child: const Text(
                                               'mehr Anzeigen',
                                               style: TextStyle(
-                                                color: Colors.blue,
-                                                fontSize: 15,
+                                                color: Color.fromARGB(
+                                                    255, 104, 18, 18),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20,
                                               ),
                                             )
                                         ),

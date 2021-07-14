@@ -7,6 +7,7 @@ import 'package:mobile_unterhaltungs_app/Produktinformationen/ProductList.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mobile_unterhaltungs_app/Mein Bereich/MeinBereich.dart';
 import 'Hauptmenue/Hauptmenue.dart';
+import 'News/NewsList.dart';
 import 'package:provider/provider.dart';
 
 class MyApp extends StatelessWidget {
@@ -52,7 +53,7 @@ class _MainMenuState extends State<MainMenu> {
       MeinBereich(_user, 15, 0),
       //ArbeitszeitBeantragen(_user),
       //UrlaubBeantragen(_user)
-      Placeholder(),
+      NewsList(),
     ];
     _pageIndex = 0;
   }

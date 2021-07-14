@@ -13,7 +13,14 @@ class ProductDetails extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Scaffold(
-
+      appBar: AppBar(
+        title: Image.asset(
+          'images/teaser-unterhaltung.png',
+        ),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        shadowColor: Colors.transparent,
+        toolbarHeight: 80,
+      ),
       body: Column(
         children: [
           //ElevatedButton(onPressed: , child: Text('Zurück')),
@@ -22,7 +29,7 @@ class ProductDetails extends StatelessWidget {
         height: 40,
         decoration: BoxDecoration(color: Color.fromARGB(
             255, 104, 18, 18),),
-      margin: const EdgeInsets.fromLTRB(0, 30, 0, 20),
+        margin: const EdgeInsets.fromLTRB(0, 30, 0, 20),
           child:Text(
             '${p.productname}',
             style: TextStyle(
