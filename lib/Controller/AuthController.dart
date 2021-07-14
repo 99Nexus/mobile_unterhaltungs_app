@@ -1,18 +1,21 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:mobile_unterhaltungs_app/Data/Person/Person.dart';
+
+final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class AuthController {
 
-  //final FirebaseAuth _auth = FirebaseAuth.instance;
   String errorTextFirstName = ' ';
   String errorTextLastName = ' ';
   String errorTextEmail = ' ';
   String errorTextPassword = ' ';
+  bool validFirstName = false;
+  bool validLastName = false;
+  bool validEmail = false;
+  bool validPassword = false;
 
-  /*
   // Benutzer auf Basis eines Firebase-Benutzers erstellen
   Person _userFromFirebaseUser(User? user) {
 
@@ -22,11 +25,47 @@ class AuthController {
     return new Person.withUID('');
   }
 
-  // Änderung der Benutzer-Authentifikation
-  Stream<Person> get authChangeStreamUser {
+  // Registrieren
+  Future registerWithEmailAndPassword(String email, String password) async {
 
-    return _auth.authStateChanges().map((User? user) => _userFromFirebaseUser(user));
-  }*/
+    try {
+
+      UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      User? user = result.user;
+
+      return _userFromFirebaseUser(user);
+    } catch(e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  // Anmelden
+  Future loginWithEmailAndPassword(String email, String password) async {
+
+    try {
+
+      UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      User? user = result.user;
+
+      return _userFromFirebaseUser(user);
+    } catch(e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  // Abmelden
+  Future logout() async {
+
+    try {
+
+      return await _auth.signOut();
+    } catch(e) {
+      print(e.toString());
+      return null;
+    }
+  }
 
   // Vornamen prüfen
   bool checkFirstName(String firstName) {
@@ -35,7 +74,7 @@ class AuthController {
 
     if(firstName.isEmpty) {
 
-      errorTextFirstName = 'Darf nicht leer sein';
+      errorTextFirstName = 'Vorname darf nicht leer sein';
       return false;
     }
 
@@ -49,7 +88,7 @@ class AuthController {
 
     if(lastName.isEmpty) {
 
-      errorTextLastName = 'Darf nicht leer sein';
+      errorTextLastName = 'Nachname darf nicht leer sein';
       return false;
     }
 
@@ -63,7 +102,7 @@ class AuthController {
 
     if(email.isEmpty) {
 
-      errorTextEmail = 'Darf nicht leer sein';
+      errorTextEmail = 'Email-Adresse darf nicht leer sein';
       return false;
     }
 
@@ -71,13 +110,13 @@ class AuthController {
   }
 
   // Passwort prüfen
-  bool checkPassword(String password, String savedPassword) {
+  bool checkPassword(String password) {
 
     errorTextPassword = ' ';
 
     if(password.isEmpty) {
 
-      errorTextPassword = 'Darf nicht leer sein';
+      errorTextPassword = 'Passwort darf nicht leer sein';
       return false;
     }
     else if(password.length < 8) {
@@ -89,11 +128,7 @@ class AuthController {
     else if(!password.contains(new RegExp(r'[0-9]')) ||
             !password.contains(new RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
 
-      errorTextPassword = 'Min. Sonderzeichen und min. eine Zahl erforderlich';
-      return false;
-    }
-    else if(savedPassword.compareTo("") != 0 && password.compareTo(savedPassword) != 0) {
-
+      errorTextPassword = 'Sonderzeichen und Zahl nötig';
       return false;
     }
 
@@ -103,10 +138,11 @@ class AuthController {
   // Eingaben prüfen - Registrierung
   bool checkRegisterInput(String firstName, String lastName, String email, String password) {
 
-    bool validFirstName = checkFirstName(firstName);
-    bool validLastName = checkLastName(lastName);
-    bool validEmail = checkEmail(email);
-    bool validPassword = checkPassword(password, "");
+    // Prüfungen explizit aufrufen, um Fehlertexte zu setzen
+    validFirstName = checkFirstName(firstName);
+    validLastName = checkLastName(lastName);
+    validEmail = checkEmail(email);
+    validPassword = checkPassword(password);
 
     if(validFirstName && validLastName && validEmail && validPassword)
       return true;
@@ -114,18 +150,23 @@ class AuthController {
     return false;
   }
 
-  bool checkLoginNumberOfUsers(int numberOfUsers) {
+  // Eingaben prüfen - Anmeldung
+  bool checkLoginInputValid(String email, String password, bool showFastLogin) {
 
-    errorTextPassword = ' ';
+    // Anmeldung wurde mit Email-Eingabe aufgerufen
+    if(!showFastLogin) {
 
-    // Größe des Snapshots(Anzahl Dokumente in der Sammlung Benutzer mit
-    // übereinstimmendem Vor-, Nachname und Passwort)
-    if(numberOfUsers == 0) {
+      // Prüfungen explizit aufrufen, um Fehlertexte zu setzen
+      validEmail = checkEmail(email);
+      validPassword = checkPassword(password);
 
-      errorTextPassword = 'Eingaben nicht korrekt - falsche Email oder falsches Passwort';
-      return false;
+      if(validEmail && validPassword)
+        return true;
+    }
+    else if(checkPassword(password) && showFastLogin) {
+      return true;
     }
 
-    return true;
+    return false;
   }
 }

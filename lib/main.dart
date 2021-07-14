@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_unterhaltungs_app/Controller/AuthController.dart';
 import 'package:mobile_unterhaltungs_app/Data/Person/Person.dart';
 import 'package:mobile_unterhaltungs_app/Kalender/CalenderView.dart';
+import 'package:mobile_unterhaltungs_app/Login%20und%20Registrieren/Registrieren.dart';
 import 'package:mobile_unterhaltungs_app/Mein%20Bereich/ArbeitszeitBeantragen.dart';
 import 'package:mobile_unterhaltungs_app/Produktinformationen/ProductList.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,6 +10,7 @@ import 'package:mobile_unterhaltungs_app/Mein Bereich/MeinBereich.dart';
 import 'Hauptmenue/Hauptmenue.dart';
 import 'News/NewsList.dart';
 import 'package:provider/provider.dart';
+import 'package:mobile_unterhaltungs_app/Login%20und%20Registrieren/Login.dart';
 
 class MyApp extends StatelessWidget {
   MyApp(this.user);

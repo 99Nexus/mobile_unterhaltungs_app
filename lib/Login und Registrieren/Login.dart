@@ -1,15 +1,15 @@
 import 'dart:ui';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile_unterhaltungs_app/Controller/AuthController.dart';
 import 'package:mobile_unterhaltungs_app/Data/Person/Person.dart';
 import 'package:mobile_unterhaltungs_app/main.dart';
-import 'dart:async';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mobile_unterhaltungs_app/Produktinformationen/ProductList.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+// Benutzer Sammlung - Firebase
 final usersCollection = FirebaseFirestore.instance
     .collection('Benutzer')
     .withConverter(
@@ -17,6 +17,8 @@ final usersCollection = FirebaseFirestore.instance
     toFirestore: (person, _) => person.toJson());
 
 void main() {
+
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(Login(new Person('', '', '', '', ''), false));
 }
 
@@ -44,7 +46,8 @@ class Login extends StatelessWidget {
 }
 
 class LoginHomePage extends StatefulWidget {
-  LoginHomePage({Key? key, required this.title, required this.user, required this.showFastLogin}) : super(key: key);
+  LoginHomePage({Key? key, required this.title, required this.user, required this.showFastLogin})
+      : super(key: key);
 
   final String title;
   Person user;
@@ -62,14 +65,8 @@ class LoginHomePageState extends State {
   String errorTextEmail = ' ';
   String errorTextPassword = ' ';
 
-  int passwordTryCounter = 2;
-
   bool showFastLogin = false;
-  bool enablePasswordInput = true;
-  bool _initialized = false;
-  bool _error = false;
-  bool inputValidEmail = false;
-  bool inputValidPassword = false;
+  bool inputValid = false;
 
   Person user = new Person('', '', '', '', '');
   AuthController authController = new AuthController();
@@ -77,6 +74,7 @@ class LoginHomePageState extends State {
   LoginHomePageState(Person user, bool showFastLogin) {
 
     // Vorname im Willkommenstext nur direkt nach Registrierung anzeigen
+    // oder wenn der Benutzer im Datenspeicher hinterlegt ist
     if(showFastLogin == false)
       this.user.firstName = '';
     else
@@ -89,19 +87,13 @@ class LoginHomePageState extends State {
     this.showFastLogin = showFastLogin;
   }
 
-  // Asynchrone Funktion um FlutterFire zu initialisieren
+  // FlutterFire initialisieren
   void initializeFlutterFire() async {
     try {
 
       await Firebase.initializeApp();
-      setState(() {
-        _initialized = true;
-      });
     } catch(e) {
-
-      setState(() {
-        _error = true;
-      });
+      print(e.toString());
     }
   }
 
@@ -136,6 +128,7 @@ class LoginHomePageState extends State {
           crossAxisCount: 1,
           children: <Widget>[
 
+            // Überschrift
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -153,9 +146,10 @@ class LoginHomePageState extends State {
                   ),
                 ),
 
-                // Vorname
+                // Vorname - nur sichtbar wenn die Registrierung übersprungen
+                // wird
                 Visibility(
-                  visible: !showFastLogin,
+                  visible: showFastLogin,
                   child: Container(
                     margin: EdgeInsets.only(bottom: 20.0),
                     child: Text(
@@ -172,7 +166,8 @@ class LoginHomePageState extends State {
               ],
             ),
 
-            // Email-Eingabe
+            // Email-Eingabe - nur sichtbar wenn die Registrierung übersprungen
+            // wird
             Visibility(
               visible: !showFastLogin,
               child: Column(
@@ -191,7 +186,6 @@ class LoginHomePageState extends State {
 
                   Container(
                     child: TextField (
-                      enabled: enablePasswordInput,
                       controller: emailController,
                       textAlign: TextAlign.center,
                       cursorColor: Color.fromARGB(255, 104, 18, 18),
@@ -240,7 +234,6 @@ class LoginHomePageState extends State {
 
                 Container(
                   child: TextField (
-                    enabled: enablePasswordInput,
                     controller: passwordController,
                     textAlign: TextAlign.center,
                     cursorColor: Color.fromARGB(255, 104, 18, 18),
@@ -287,74 +280,93 @@ class LoginHomePageState extends State {
                       backgroundColor: MaterialStateProperty.all<Color>(Color.fromARGB(255, 104, 18, 18)),
                       foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
 
-                      setState(() {
+                      // Login wird mit Email-Eingabe aufgerufen
+                      // Falls die Registrierung übersprungen wurde
+                      if(!showFastLogin) {
 
-                        // In das Hauptmenue wechseln sofern das Passwort korrekt ist
-                        // und die Anmeldung direkt nach der Registrierung aufgerufen wurde
-                        if(showFastLogin == true) {
-
-                          inputValidPassword = authController.checkPassword(passwordController.text, user.password);
-                          errorTextPassword = authController.errorTextPassword;
-
-                          if(inputValidPassword)
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => MyApp(user)));
-                        }
-                        // Falls die Anmelung nicht direkt nach der Registrierung aufgerufen wurde
-                        // Prüfung der Eingaben erst zulassen, wenn die Eingabefelder gefüllt sind
-                        else {
-
-                          inputValidEmail = authController.checkEmail(emailController.text);
-                          inputValidPassword = authController.checkPassword(passwordController.text, "");
+                        setState(() {
+                          // Prüfungen explizit aufrufen, um Fehlertexte zu setzen
+                          inputValid = authController.checkLoginInputValid(emailController.text,
+                                                                           passwordController.text,
+                                                                           showFastLogin);
                           errorTextEmail = authController.errorTextEmail;
                           errorTextPassword = authController.errorTextPassword;
+                        });
 
-                          if(inputValidEmail && inputValidPassword) {
+                        // Email und Passwort entsprechen den Vorgaben
+                        // Z.B. 8-14 Passwortlänge
+                        if(inputValid) {
 
-                            inputValidPassword = false;
-                            // Benutzer mit eingegebener Email und Passwort ermitteln
-                            usersCollection
-                                .where('Email', isEqualTo: emailController.text)
-                                .where('Passwort', isEqualTo: passwordController.text)
-                                .get()
-                                .then((snapshot) => {
+                          dynamic result = await authController.loginWithEmailAndPassword(emailController.text,
+                                                                                          passwordController.text);
 
-                              inputValidPassword = authController.checkLoginNumberOfUsers(snapshot.size),
-                              errorTextPassword = authController.errorTextPassword,
+                          // Benutzer mit eingegebener Email und Passwort ermitteln
+                          usersCollection
+                              .where('Email', isEqualTo: emailController.text)
+                              .where('Passwort', isEqualTo: passwordController.text)
+                              .get()
+                              .then((snapshot) => {
 
-                              if(inputValidPassword) {
+                            // snapshot.size enthält Anzahl an passenden Datensätzen
+                            if(snapshot.size > 0 && result != null) {
 
-                                Navigator.pushReplacement(context,
-                                    MaterialPageRoute(builder: (_) =>
-                                        MyApp(user = new Person(
-                                            snapshot.docs[0].data().firstName,
-                                            snapshot.docs[0].data().lastName,
-                                            snapshot.docs[0].data().position,
-                                            snapshot.docs[0].data().email,
-                                            snapshot.docs[0].data().password)))),
-                              }
-                              else {
+                              // Ermittelter Datensatz zur eingegebenen Email und
+                              // Passwort
+                              user = new Person(snapshot.docs[0].data().firstName,
+                                                snapshot.docs[0].data().lastName,
+                                                snapshot.docs[0].data().position,
+                                                snapshot.docs[0].data().email,
+                                                snapshot.docs[0].data().password),
 
-                                if(passwordTryCounter == 0) {
+                              // Benutzer in Datenspeicher speichern
+                              // Zum Hauptmenü wechseln
+                              saveUserInApp(user),
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (_) =>
+                                      MyApp(user))),
+                            }
+                            else {
 
-                                  errorTextPassword = "Das Passwort wird für 60 Sekunden gesperrt",
-                                  enablePasswordInput = false,
+                              setState(() {
+                                errorTextPassword = 'Die Eingaben sind nicht korrekt';
+                              })
+                            }
+                          });
+                        }
+                      }
+                      // Login wird ohne Email-Eingabe aufgerufen
+                      // Falls der Benutzer sich grade registriert hat oder
+                      // der Benutzer bereits in der App hinterlegt ist
+                      else {
 
-                                  Timer(Duration(seconds: 60), () {
+                        setState(() {
+                          // Prüfungen explizit aufrufen, um den Fehlertext zu setzen
+                          inputValid = authController.checkPassword(passwordController.text);
+                          errorTextPassword = authController.errorTextPassword;
+                        });
 
-                                    enablePasswordInput = true;
-                                    passwordTryCounter = 2;
-                                  }),
-                                },
+                        // Passwort entspricht Konventionen
+                        if(inputValid) {
 
-                                errorTextPassword = "Das Passwort ist nicht korrekt noch " + passwordTryCounter.toString() + " Versuche",
-                                passwordTryCounter-1,
-                              }
+                          dynamic result = await authController.loginWithEmailAndPassword(user.email, passwordController.text);
+
+                          if(result != null) {
+
+                            // Benutzer in Datenspeicher speichern
+                            // Zum Hauptmenü wechseln
+                            saveUserInApp(user);
+                            Navigator.push(context, MaterialPageRoute(builder: (_) => MyApp(user)));
+                          }
+                          else {
+
+                            setState(() {
+                              errorTextPassword = 'Die Eingaben sind nicht korrekt';
                             });
                           }
                         }
-                      });
+                      }
                     },
                     child: Text(
                       'Anmelden',
@@ -379,6 +391,7 @@ class LoginHomePageState extends State {
                     ),
                     onPressed: () {
 
+                      // Zur Produktsuche wechseln
                       Navigator.push(context,
                           MaterialPageRoute(builder: (_) => ProductList()));
                     },
@@ -398,5 +411,24 @@ class LoginHomePageState extends State {
         ),
       ),
     );
+  }
+
+  void saveUserInApp(user) async {
+
+    final preference = await SharedPreferences.getInstance();
+
+    // Benutzerattribute in Datenspeichern löschen um neue Daten einzutragen
+    preference.remove("userFirstName");
+    preference.remove("userLastName");
+    preference.remove("userPosition");
+    preference.remove("userEmail");
+    preference.remove("userPassword");
+
+    // Benutzerattribute in Datenspeichern hinterlegen
+    preference.setString("userFirstName", user.firstName);
+    preference.setString("userLastName", user.lastName);
+    preference.setString("userPosition", user.position);
+    preference.setString("userEmail", user.email);
+    preference.setString("userPassword", user.password);
   }
 }

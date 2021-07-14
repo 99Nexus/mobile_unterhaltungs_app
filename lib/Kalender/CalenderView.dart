@@ -171,7 +171,7 @@ class _CalenderViewState extends State<CalenderView> {
                           _selectedDay!, _user)),
                 );
               },
-              child: Text('Arbeitszeit setzten'),
+              child: Text('Arbeitszeit setzen'),
               style: ElevatedButton.styleFrom(
                 textStyle: TextStyle(fontSize: 20),
               ),

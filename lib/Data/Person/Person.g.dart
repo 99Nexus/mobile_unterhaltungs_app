@@ -8,19 +8,18 @@ part of 'Person.dart';
 
 Person _$PersonFromJson(Map<String, dynamic> json) {
   return Person(
-    json['firstName'] as String,
-    json['lastName'] as String,
-    json['position'] as String,
-    json['email'] as String,
-    json['password'] as String,
-  )..uid = json['uid'] as String;
+    json['Vorname'] as String,
+    json['Nachname'] as String,
+    json['Position'] as String,
+    json['Email'] as String,
+    json['Passwort'] as String,
+  );
 }
 
 Map<String, dynamic> _$PersonToJson(Person instance) => <String, dynamic>{
-      'firstName': instance.firstName,
-      'lastName': instance.lastName,
-      'position': instance.position,
-      'email': instance.email,
-      'password': instance.password,
-      'uid': instance.uid,
+      'Vorname': instance.firstName,
+      'Nachname': instance.lastName,
+      'Position': instance.position,
+      'Email': instance.email,
+      'Passwort': instance.password,
     };
