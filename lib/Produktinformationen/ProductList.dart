@@ -54,10 +54,9 @@ class _ProductListState extends State<ProductList>{
 
   @override
   Widget build(BuildContext context) {
+    //Für die Höhenerfassung
     final Size size = MediaQuery.of(context).size;
-    double width = MediaQuery.of(context).size.width;
-    double ourwidth = width*0.5;
-    final double categoryHeight = size.height*0.30;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -81,6 +80,7 @@ class _ProductListState extends State<ProductList>{
               ),
             buildSearch(),
             Expanded(
+              //Auslesen der Produkte aus der firebase Sammlung
               child: StreamBuilder<QuerySnapshot<Product>>(
                 stream: _products,
                 builder: (context, snapshot) {
@@ -103,7 +103,7 @@ class _ProductListState extends State<ProductList>{
 
                       itemCount: itemsData.length,
                       itemBuilder: (context, index) {
-
+                        //Erstellen eines Container mit den Produkt Informationen
                         return Container(
                           height: 150,
                           margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -179,6 +179,7 @@ class _ProductListState extends State<ProductList>{
             ),
           ]),
         ),
+        //Plus Button für das Anlegen neuer Produkte
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.add),
           onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (_) =>
@@ -190,14 +191,14 @@ class _ProductListState extends State<ProductList>{
     );
   }
 
-
+//Suchleiste
   Widget buildSearch() => SearchWidget(
     text: query,
     hintText: 'Produkt- oder Markenname eingeben',
     onChanged: searchProduct,
   );
 
-  //TODO: Funktionerende Suche
+  //TODO: Funktionerende Suche (fehlgeschlagen)
   void searchProduct(String query) async {
 
     final itemsdata = searchItems.where((element) {

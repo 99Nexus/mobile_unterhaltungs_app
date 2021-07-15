@@ -99,22 +99,7 @@ class MeinBereich extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Container(child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Color.fromARGB(255, 104, 18, 18),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12), // <-- Radius
-                      ),
-                    ),
-                    onPressed: () {},
-                    child: Text(
-                      'Meine Dateien',
-                      style:
-                      TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  )],
+                  ],
               )
           )
         ],

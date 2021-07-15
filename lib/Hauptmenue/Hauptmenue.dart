@@ -143,11 +143,10 @@ class HauptmenueHomePageState extends State {
                   foregroundColor:
                       MaterialStateProperty.all<Color>(Colors.white),
                 ),
-                onPressed: () {
-                  // Navigation zu Chats
-                },
+                onPressed: () => Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (_) => ProductList())),
                 child: Text(
-                  'Chats',
+                  'Produktliste',
                   style: TextStyle(
                     fontSize: 40,
                     fontFamily: 'Arial',

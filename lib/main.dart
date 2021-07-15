@@ -97,7 +97,7 @@ class _MainMenuState extends State<MainMenu> {
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
+            icon: Icon(Icons.shopping_bag),
             label: '',
           ),
           BottomNavigationBarItem(
