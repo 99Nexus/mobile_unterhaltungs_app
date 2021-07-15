@@ -253,8 +253,8 @@ class _OrderAttendanceState extends State<OrderAttendance> {
 
                     vacationRef.add(Vacation(_user.firstName, _user.lastName, _insgesamtGebTage, _nochTage, _gebuchteTage, _urlaubsbeginn, _urlaubsende));
 
-
-                    Navigator.pop(context);
+                    //Navigator.pop(context);
+                    //Navigator.push(context, MaterialPageRoute(builder: (_) => Hauptmenue(_user)));
                   },
                   child: Text('Beantragen'))
             ],

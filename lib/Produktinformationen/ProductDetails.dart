@@ -21,8 +21,9 @@ class ProductDetails extends StatelessWidget {
         shadowColor: Colors.transparent,
         toolbarHeight: 80,
       ),
-      body: Column(
-        children: [
+      body: SingleChildScrollView(
+        child:Column(
+          children: [
           //ElevatedButton(onPressed: , child: Text('Zurück')),
       Container(
         width: MediaQuery.of(context).size.width,
@@ -81,6 +82,7 @@ class ProductDetails extends StatelessWidget {
           ),
             ),
         ],
+      ),
       ),
     );
   }

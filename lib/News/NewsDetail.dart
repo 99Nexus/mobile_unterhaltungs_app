@@ -21,7 +21,8 @@ class NewsDetails extends StatelessWidget {
         shadowColor: Colors.transparent,
         toolbarHeight: 80,
       ),
-      body: Column(
+      body: SingleChildScrollView(
+        child: Column(
         children: [
           //ElevatedButton(onPressed: , child: Text('Zurück')),
           Container(
@@ -70,6 +71,7 @@ class NewsDetails extends StatelessWidget {
             ),
           ),
         ],
+      ),
       ),
     );
   }

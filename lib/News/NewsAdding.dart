@@ -41,7 +41,7 @@ class NewsAddingState extends State<NewsAdding> {
         shadowColor: Colors.transparent,
         toolbarHeight: 80,
       ),
-      body: Container(
+      body: SingleChildScrollView(
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[

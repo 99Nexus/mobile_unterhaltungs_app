@@ -43,16 +43,8 @@ class ProductAddingState extends State<ProductAdding> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar(
-        title: Image.asset(
-          'images/teaser-unterhaltung.png',
-        ),
-        centerTitle: true,
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        shadowColor: Colors.transparent,
-        toolbarHeight: 80,
-      ),
-      body: Container(
+
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -273,7 +265,6 @@ class ProductAddingState extends State<ProductAdding> {
                           categoryController.text,
                           brandController.text);
                       saveProductInCollection();
-                      //Navigator.push(context, MaterialPageRoute(builder: (_) => ProductList()));
                       Navigator.pop(context);
                     });
                   }
@@ -287,25 +278,25 @@ class ProductAddingState extends State<ProductAdding> {
   }
 
   void saveProductInCollection() {
-    // RollenID für Mitarbeiter/in als Standardwert
+
     int productID = 0;
 
     setState(() {
 
-      // Aktuellste BenutzerID holen
+      // Aktuellste ProduktID holen
           usersCollection
               .get()
               .then((snapshot) => {
 
-            // BenutzerID aktualisieren, falls bereits User vorhanden sind
+            // ProduktID aktualisieren, falls bereits Produkt vorhanden sind
             // Sonst als erste ID "0" verwenden
             // Hinweis: snapshot.size speichert die Länge der Collection
             if(snapshot.size > 0)
               productID = snapshot.size,
 
-            // Benutzer in Datenbank hinzufügen
+            // Produkt in Datenbank hinzufügen
             // Hinweis: Funktion befindet sich in "then"-Abschnitt, da das Hinzufügen
-            // erst nach Ermittlung der PositionsID und der aktuellen BenutzerID
+            // erst nach Ermittlung der aktuellen ProduktID
             // ausgeführt werden soll
             usersCollection.doc(productID.toString())
                 .set(Product(productnameController.text,

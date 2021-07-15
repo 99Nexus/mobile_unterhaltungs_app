@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_unterhaltungs_app/Controller/AuthController.dart';
 import 'package:mobile_unterhaltungs_app/Data/Person/Person.dart';
 import 'package:mobile_unterhaltungs_app/Kalender/CalenderView.dart';
+import 'package:mobile_unterhaltungs_app/News/NewsList.dart';
 import 'package:mobile_unterhaltungs_app/Produktinformationen/ProductList.dart';
 import 'package:mobile_unterhaltungs_app/Mein Bereich/MeinBereich.dart';
 import 'package:mobile_unterhaltungs_app/Login%20und%20Registrieren/Login.dart';
@@ -198,7 +199,7 @@ class HauptmenueHomePageState extends State {
                   context,
                   MaterialPageRoute(
                       builder: (_) =>
-                          ProductList()), //Hier kommt der Aufruf der Seite
+                          NewsList()), //Hier kommt der Aufruf der Seite
                 ),
                 child: Text(
                   'News',
