@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:mobile_unterhaltungs_app/Produktinformationen/ProductDetails.dart';
 import 'Product.dart';
 import 'search_widget.dart';
+import 'ProductAdding.dart';
 
 
 final productentryRef = FirebaseFirestore.instance
@@ -76,7 +77,7 @@ class _ProductListState extends State<ProductList>{
                 children: <Widget>[
 
                   Text(
-                    "Menu",
+                    "Produktliste",
                     style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 ],
@@ -183,6 +184,13 @@ class _ProductListState extends State<ProductList>{
               ),
             ),
           ]),
+        ),
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (_) =>
+              ProductAdding()));
+          },
+          backgroundColor: Color.fromARGB(255, 104, 18, 18),
         ),
       ),
     );

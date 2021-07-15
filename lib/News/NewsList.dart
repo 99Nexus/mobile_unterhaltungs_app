@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
+import 'package:mobile_unterhaltungs_app/News/NewsAdding.dart';
 import 'NewsConstant.dart';
 import 'News.dart';
 import 'NewsDetail.dart';
@@ -14,14 +15,14 @@ class NewsList extends StatefulWidget {
 }
 
 class NewsListState extends State<NewsList> {
-  late List<News> books;
+  late List<News> newspl;
   String query = '';
 
   @override
   void initState() {
     super.initState();
 
-    books = allNews;
+    newspl = allNews;
   }
 
   @override
@@ -50,24 +51,31 @@ class NewsListState extends State<NewsList> {
         ),
         Expanded(
           child: ListView.builder(
-            itemCount: books.length,
+            itemCount: newspl.length,
             itemBuilder: (context, index) {
-              final book = books[index];
+              final news = newspl[index];
 
-              return buildBook(book, context);
+              return buildnews(news, context);
             },
           ),
         ),
       ],
     ),
+    floatingActionButton: FloatingActionButton(
+      child: Icon(Icons.add),
+      onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (_) =>
+          NewsAdding()));
+      },
+      backgroundColor: Color.fromARGB(255, 104, 18, 18),
+    ),
   );
 
 
-  Widget buildBook(News book, BuildContext c) => ListTile(
-    title: Text(book.title),
-    subtitle: Text(book.author),
+  Widget buildnews(News news, BuildContext c) => ListTile(
+    title: Text(news.title),
+    subtitle: Text(news.author),
     onTap: () => Navigator.push(c,
-        MaterialPageRoute(builder: (_) => NewsDetails(book)))
+        MaterialPageRoute(builder: (_) => NewsDetails(news)))
   );
 
 }
