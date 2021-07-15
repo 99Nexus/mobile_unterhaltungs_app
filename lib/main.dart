@@ -7,6 +7,7 @@ import 'package:mobile_unterhaltungs_app/Mein%20Bereich/ArbeitszeitBeantragen.da
 import 'package:mobile_unterhaltungs_app/Produktinformationen/ProductList.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:mobile_unterhaltungs_app/Mein Bereich/MeinBereich.dart';
+import 'package:mobile_unterhaltungs_app/Mein Bereich/UrlaubBeantragen.dart';
 import 'Hauptmenue/Hauptmenue.dart';
 import 'News/NewsList.dart';
 import 'package:provider/provider.dart';
@@ -54,7 +55,7 @@ class _MainMenuState extends State<MainMenu> {
       ProductList(),
       MeinBereich(_user, 15, 0),
       //ArbeitszeitBeantragen(_user),
-      //UrlaubBeantragen(_user)
+      //UrlaubBeantragen(_user),
       NewsList(),
     ];
     _pageIndex = 0;

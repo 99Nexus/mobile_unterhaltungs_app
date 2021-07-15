@@ -148,6 +148,10 @@ class _CalenderViewState extends State<CalenderView> {
           children: [
             ElevatedButton(
               //TODO Farbe anpassen
+              style: ElevatedButton.styleFrom(
+                primary: Color.fromARGB(255, 104, 18, 18),
+                  textStyle: TextStyle(fontSize: 20)
+              ),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -157,9 +161,6 @@ class _CalenderViewState extends State<CalenderView> {
 
               },
               child: Text('Urlaub buchen'),
-              style: ElevatedButton.styleFrom(
-                textStyle: TextStyle(fontSize: 20),
-              ),
             ),
             //Arbeitszeiten werden gesetzt indem das ausgewählte Datum mit übergeben werden
             ElevatedButton(//TODO farbe anpassen
@@ -174,6 +175,7 @@ class _CalenderViewState extends State<CalenderView> {
               child: Text('Arbeitszeit setzen'),
               style: ElevatedButton.styleFrom(
                 textStyle: TextStyle(fontSize: 20),
+                primary: Color.fromARGB(255, 104, 18, 18),
               ),
             ),
           ],

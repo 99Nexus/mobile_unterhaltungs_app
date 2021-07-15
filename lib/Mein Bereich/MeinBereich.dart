@@ -18,96 +18,105 @@ class MeinBereich extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       body: Column(
         children: [
           Row(
-            children: [
+            children: <Widget>[
               Icon(
                 Icons.account_box,
                 size: 175.0,
               ),
-              Column(
-                children: [
-                  Text(
-                    '${user.firstName} ${user.lastName}',
-                    style: TextStyle(fontSize: 18.0),
-                  ),
-                  Text(
-                    'Restarbeitszeit beträgt: $_arbeitszeit + $_arbeitszeitMinute',
-                    style: TextStyle(fontSize: 18.0),
-                  ),
-                ],
+              Flexible(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                        "${user.firstName} ${user.lastName}",
+                      style: TextStyle(fontSize: 18.0),
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      "Restarbeitszeit beträgt: \n $_arbeitszeit Std $_arbeitszeitMinute Min",
+                      style: TextStyle(fontSize: 18.0),
+                      textAlign: TextAlign.center,
+                    )
+                  ],
+                ),
               ),
             ],
           ),
           Expanded(
               child: GridView.count(
-            primary: false,
-            padding: const EdgeInsets.all(20),
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            crossAxisCount: 2,
-            children: <Widget>[
-              Container(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12), // <-- Radius
-                    ),
-                  ),
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => ArbeitszeitBeantragen(
+                primary: false,
+                padding: const EdgeInsets.all(20),
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10,
+                crossAxisCount: 2,
+                children: <Widget>[
+                  Container(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Color.fromARGB(255, 104, 18, 18),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12), // <-- Radius
+                        ),
+                      ),
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => ArbeitszeitBeantragen(
                               user: user,
                             )), //Hier kommt der Aufruf der Seite
-                  ),
-                  child: Text(
-                    'Arbeitszeit eintragen',
-                    style: const TextStyle(
-                        fontSize: 20.0, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
-              Container(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12), // <-- Radius
+                      ),
+                      child: Text(
+                        'Arbeitszeit eintragen',
+                        style: const TextStyle(
+                            fontSize: 20.0, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => UrlaubBeantragen(
-                            user: user)), //Hier kommt der Aufruf der Seite
-                  ),
-                  child: Text(
-                    'Urlaubstage eintragen',
-                    style:
+                  Container(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Color.fromARGB(255, 104, 18, 18),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12), // <-- Radius
+                        ),
+                      ),
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => UrlaubBeantragen(
+                                user: user)), //Hier kommt der Aufruf der Seite
+                      ),
+                      child: Text(
+                        'Urlaubstage eintragen',
+                        style:
                         TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              Container(child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12), // <-- Radius
+                  Container(child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Color.fromARGB(255, 104, 18, 18),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12), // <-- Radius
+                      ),
+                    ),
+                    onPressed: () {},
+                    child: Text(
+                      'Meine Dateien',
+                      style:
+                      TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-                ),
-                onPressed: () {},
-                child: Text(
-                  'Meine Dateien',
-                  style:
-                  TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              )],
+                  )],
+              )
           )
-    )
         ],
       ),
     );

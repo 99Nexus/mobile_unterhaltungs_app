@@ -4,6 +4,7 @@ import 'package:mobile_unterhaltungs_app/Data/Kalender/CalenderEntry.dart';
 import 'package:mobile_unterhaltungs_app/Data/Person/Person.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:mobile_unterhaltungs_app/Mein Bereich/MeinBereich.dart';
+import 'package:mobile_unterhaltungs_app/Hauptmenue/Hauptmenue.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -87,6 +88,7 @@ class _OrderAttendanceState extends State<OrderAttendance> {
     double ourwidth = width * 0.75;
     return Scaffold(
 
+
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -147,8 +149,14 @@ class _OrderAttendanceState extends State<OrderAttendance> {
                                 setState(() {
                                   _start = DateTime(_start.year, _start.month,
                                       _start.day, time.hour, time.minute);
-                                  _arbeitszeitStunde = _end.hour - _start.hour;
-                                  _arbeitszeitMinute = _end.minute - _start.minute;
+                                  int tmp = _end.hour - _start.hour;
+
+                                  if(tmp >= 0)
+                                    {
+                                      _arbeitszeitStunde = _end.hour - _start.hour;
+                                      _arbeitszeitMinute = _end.minute - _start.minute;
+                                    }
+
 
                                   print(_start.toString());
                                 });
@@ -236,13 +244,20 @@ class _OrderAttendanceState extends State<OrderAttendance> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Color.fromARGB(255, 104, 18, 18),
+                  ),
                   onPressed: () {
                     Navigator.of(context).pop(MaterialPageRoute(
                         builder: (context) =>
                             MeinBereich(_user, _arbeitszeitStunde, _arbeitszeitMinute)));
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => MeinBereich(_user, _arbeitszeitStunde, _arbeitszeitMinute)));
                   },
                   child: Text('Abbrechen')),
               ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Color.fromARGB(255, 104, 18, 18),
+                  ),
                   onPressed: () {
                     calentryRef.add(CalenderEntry(
                         _user.lastName,
@@ -254,7 +269,7 @@ class _OrderAttendanceState extends State<OrderAttendance> {
                         _arbeitszeitStunde,
                         _taetigkeit,
                         _arbeitszeitMinute));
-                    Navigator.pop(context);
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => MeinBereich(_user, _arbeitszeitStunde, _arbeitszeitMinute)));
                   },
                   child: Text('Speichern'))
             ],
